@@ -3,6 +3,7 @@ import { redact } from "@/domain/redact";
 import { defaultMisconceptions } from "@/domain/taxonomy";
 import type { Assignment, Correction, Misconception, MisconceptionId, QuestionId, StuckReport } from "@/domain/types";
 import type { EngineResult } from "@/engine/contract";
+import { pool } from "@/engine/pool";
 import { createSampleEngine, type Exemplars, type SampleEngine } from "@/engine/sample/classify";
 
 const EXEMPLAR_MAX = 20;
@@ -59,6 +60,7 @@ const nextId = (prefix: string) => `${prefix}${++state().seq}`;
 const now = () => new Date().toISOString();
 
 let engineCache: { key: string; engine: SampleEngine } | undefined;
+let latestRerun = 0;
 /** Sample engine including TA exemplars (store-only; eval uses a clean engine). */
 export function demoEngine(): SampleEngine {
   const key = JSON.stringify(state().exemplars);
@@ -140,21 +142,30 @@ export const store = {
 
   /** Re-classify every report not touched by a TA. */
   async rerun(
-    classify: (text: string) => EngineResult | Promise<EngineResult>,
+    classify: (report: Pick<StuckReport, "text" | "questionId">) => EngineResult | Promise<EngineResult>,
     engine: State["engine"],
-  ): Promise<{ processed: number; abstained: number; failed: number }> {
-    const targets = state().reports.filter((r) => r.assignment.source === "ai");
-    const results = await Promise.all(targets.map((r) => Promise.resolve(classify(r.text))));
+    concurrency = Infinity,
+  ) {
+    const current = state();
+    const run = ++latestRerun;
+    const targets = current.reports.filter((r) => r.assignment.source === "ai");
+    const results = await pool(targets, concurrency, classify);
+    if (current !== state() || run !== latestRerun) {
+      return { processed: 0, abstained: 0, failed: 0, superseded: true };
+    }
+    let processed = 0;
     let abstained = 0;
     let failed = 0;
     targets.forEach((r, i) => {
+      if (r.assignment.source !== "ai") return;
       const res = results[i];
+      processed++;
       if (res.misconceptionId === "abstain") abstained++;
       if (res.reason?.startsWith("Live engine error")) failed++;
       r.assignment = toAssignment(res);
     });
-    state().engine = engine;
-    return { processed: targets.length, abstained, failed };
+    current.engine = engine;
+    return { processed, abstained, failed, superseded: false };
   },
 
   reset() {

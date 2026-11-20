@@ -1,5 +1,6 @@
 import { HELDOUT } from "@/data/heldout";
-import { classifyLive, LiveConfigSchema, MAX_CONCURRENT, pool } from "@/engine/live/openaiCompatible";
+import { classifyLive, LiveConfigSchema, MAX_CONCURRENT } from "@/engine/live/openaiCompatible";
+import { pool } from "@/engine/pool";
 import { cleanSampleEngine } from "@/engine/sample/classify";
 import { runEval } from "@/eval/runEval";
 import { baseProcedure, createTRPCRouter } from "../init";

@@ -31,7 +31,11 @@ export function RerunControls() {
           Re-run with Sample engine
         </button>
       ) : null}
-      {r && r.failed > 0 ? (
+      {rerun.error ? (
+        <p className="small reason" role="status">{rerun.error.message}</p>
+      ) : r?.superseded ? (
+        <p className="small muted" role="status">Results were discarded after a reset or a newer run.</p>
+      ) : r && r.failed > 0 ? (
         <div className="banner banner-warn" role="status" style={{ width: "100%" }}>
           {r.failed} of {r.processed} reports could not be classified by the live model and went to review. Sample results are one
           click away: Re-run with Sample engine.
