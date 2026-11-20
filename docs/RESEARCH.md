@@ -88,9 +88,11 @@ router (no HTTP), so `getUrl()` only needs the relative `/api/trpc` in the brows
   `response_format: { type: "json_object" }` on a 400 and rely on our zod validator either way.
 - Temperature 0. One report per call, max 6 concurrent, 20 s timeout, failures become abstain with a reason.
 
-## 7. Rubric notes (from the brief; rules page returned 403 to the fetcher)
+## 7. Rubric and submission requirements
 
 Rules page weights: Innovation 25, Technical 25, Real-world impact 20, AI integration and responsible use 15,
 UX and presentation 15. Devpost widget: Innovation 30, Technical 30, Design/UX 20, Presentation/Impact 20.
-Required: overview, problem and solution, AI implementation explanation (models/APIs and their role), demo
-link or video, screenshots, repo with setup docs, 2-4 minute video.
+The submission needs a project overview, problem and solution, an explanation of how AI is used, a working
+demo or video, screenshots, an accessible source repository, and accurate team information. Devpost
+recommends a video of about two to four minutes. The listing limits participation to eligible students.
+[Official rules](https://slayy-hacks.devpost.com/rules) · [Event requirements](https://slayy-hacks.devpost.com/)

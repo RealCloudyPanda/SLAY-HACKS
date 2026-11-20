@@ -65,7 +65,7 @@ All TA screens share a header: product name, unit name ("Unit 3: Heuristic searc
 | `/ta/review` | Review queue | Each item: sentence, question tag, reason, top-2 guesses with scores as one-click "Assign to X" buttons, plus "Move to…" for any other. Empty state: "Nothing waiting. Every report has a misconception." |
 | `/ta/compare` | Compare view | Two columns. Left "Grouped by question number": questions ranked by count; for the top question, its mix of misconceptions as a stacked bar. Right "Grouped by misconception": teach-first list. Headline numbers: "First explanation reaches N students" for each. One sentence of conclusion generated from the data (template, not AI). |
 | `/ta/eval` | Evaluation | Engine used, run timestamp, held-out size, metric cards (section 7), naive baseline, confusion table (gold rows × predicted cols incl. abstain), list of misses with sentence and both labels, thresholds used, "Synthetic held-out set, 20 items: small, indicative only". Button "Run again". If Live configured, a second button "Evaluate live engine" (runs on held-out, shows its own numbers). |
-| `/ta/settings` | Settings | Engine radio (Sample / Live), Live fields (base URL default `https://api.openai.com/v1`, model, API key password field with show toggle), "Test connection", "Forget key", plain note: "Your key stays in this browser's localStorage. It is sent to this app's server only while a request runs, forwarded to the URL above, and never stored or logged." |
+| `/ta/settings` | Settings | Sample / Live selector, approved HTTPS base URL (default `https://api.openai.com/v1`), model, key field with show toggle, "Test connection", "Forget key", and disclosure of browser key storage and live provider requests. |
 
 ## 4. Architecture
 
@@ -143,10 +143,11 @@ interface Correction { id: string; at: string; kind: "confirm" | "move" | "rejec
 | `compare.get` | query | none | `{ byQuestion[], byMisconception[], topQuestionMix[], reach: { byQuestion, byMisconception }, sentence }` |
 | `engine.rerun` | mutation | `{ engine: "sample" } \| { engine: "live", baseUrl, model, apiKey }` | `{ processed, abstained, failed }` |
 | `engine.test` | mutation | live config | `{ ok, message }` |
-| `eval.run` | query (sample) / mutation (live) | `{ engine, ...liveConfig? }` | `EvalReport` (section 7) |
+| `eval.run` | query | none | Sample `EvalReport` (section 7) |
+| `eval.runLive` | mutation | live config | Live `EvalReport` (section 7) |
 | `admin.reset` | mutation | none | `{ ok: true }` |
 
-Rules: the server never logs inputs of `engine.*` / `eval.run` (they can carry a key). Error messages returned
+Rules: the server never logs inputs of `engine.*` / `eval.runLive` (they can carry a key). Error messages returned
 to the client must not echo the key. All mutations invalidate `dashboard`, `cluster`, `review`, `compare`.
 
 ## 5. Taxonomy and synthetic data
@@ -328,7 +329,7 @@ text (no colour-only meaning). Mobile: `/submit` is single-column at 375px; TA p
 | Innovation & originality (25) | Grouping by misconception across questions; compare view proves a different first explanation; abstain by default | `/ta/compare`, video 0:40 |
 | Technical implementation (25) | End-to-end typed tRPC v11 contract, deterministic engine with zod-validated output, unit tests, `npm run eval` | repo, `/ta/eval`, README "How it works" |
 | Real-world impact (20) | The TA's 10 minutes; one explanation reaching N students; works offline with zero setup | landing, `/ta`, video 0:00 |
-| AI integration & responsible use (15) | Verbatim evidence, abstain + review queue, first-class corrections, no labels shown to students, redaction, measured held-out numbers incl. misses, key never stored | `/ta/m/[id]`, `/ta/review`, `/ta/eval`, Settings note |
+| AI integration & responsible use (15) | Verbatim evidence, abstention, TA corrections, no label returned by the form, basic redaction, measured results with misses, and live data disclosure | `/ta/m/[id]`, `/ta/review`, `/ta/eval`, Settings note |
 | UX & presentation (15) | Calm "answer sheet" look, readable heatmap, 30-second student flow on mobile, clear video | all screens, screenshots |
 
 ## 11. Video script (about 3:00)
@@ -342,7 +343,7 @@ text (no colour-only meaning). Mobile: `/submit` is single-column at 375px; TA p
 | 1:25 | `/ta/m/goal-test-on-generation` | "Every assignment shows its evidence, quoted word for word, and a confidence." Rename the misconception; confirm one report. |
 | 1:50 | `/ta/review` | "When it isn't sure, it abstains. This one mixes two ideas, so a human decides." Assign with one click; count updates. (If exemplars shipped: submit a paraphrase, it lands correctly.) |
 | 2:15 | `/ta/eval` | "We measured it on 20 synthetic examples. See every miss. The synonym list reflects vocabulary in the test set." Read the numbers on screen. |
-| 2:40 | `/ta/settings` | "It runs fully offline by default. Bring your own model key if you want; it stays in your browser." |
+| 2:40 | `/ta/settings` | "Sample mode runs offline. If you opt into live mode, the demo server sends your key and redacted reports to the provider on a rerun." |
 | 2:50 | `/ta` | "Office Hours Heatmap: explain the right thing first." |
 
 ## 12. Devpost copy
@@ -358,10 +359,10 @@ text (no colour-only meaning). Mobile: `/submit` is single-column at 375px; TA p
     and every correction is logged.
   - *AI implementation:* A deterministic, offline Sample engine (synonym normalisation, weighted cue patterns,
     TF-IDF similarity to misconception definitions and TA-confirmed exemplars, abstain rule) is the default.
-    An optional Live engine calls any OpenAI-compatible model with a JSON-schema contract. Both outputs pass
+    An optional Live engine calls an approved OpenAI-compatible provider with a JSON-schema contract. Both outputs pass
     the same validator: the evidence must be a verbatim quote or the result becomes an abstain.
-  - *Responsible use:* synthetic data only, no student identities, redaction, no labels shown to students,
-    human corrections first-class, measured held-out evaluation including misses.
+  - *Responsible use:* public demo for synthetic reports, basic redaction, no label returned by the student form,
+    human corrections, measured evaluation including misses, and disclosure of live provider requests.
   - *Built with:* Next.js, React, tRPC, TanStack Query, zod, TypeScript, Vitest.
   - *Measured results:* paste from `npm run eval` output only.
 
@@ -371,8 +372,8 @@ text (no colour-only meaning). Mobile: `/submit` is single-column at 375px; TA p
 - [ ] README "How this was built" discloses AI-assisted development
 - [ ] At least 3 screenshots in `docs/images/` (dashboard hero, compare, cluster detail, review, eval)
 - [ ] `npm run build` and `npm test` pass on a clean clone; `npm run eval` output pasted into README with date + commit
-- [ ] Demo link (if deployed) or video link
-- [ ] 2 to 4 minute video following section 11
+- [ ] Accessible demo or video link and repository link, checked while signed out
+- [ ] About 2 to 4 minutes for the video. Use fictional reports and keep credentials off screen.
 - [ ] Devpost fields: name, tagline, problem/solution, AI implementation, built with, screenshots, repo, video
 - [ ] Every data screen labelled "Synthetic demo data"; no real student data or course materials anywhere
 - [ ] No secrets, no `.env`, no AI co-author trailers in git history
