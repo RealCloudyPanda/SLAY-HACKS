@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { classifyLive } from "@/engine/live/openaiCompatible";
+import { classifyLive, LiveConfigSchema, TIMEOUT_MS } from "@/engine/live/openaiCompatible";
 
 const cfg = { baseUrl: "https://example.test/v1", model: "m", apiKey: "sk-SECRET-123" };
 const text = "I stopped the search as soon as the goal was added to the open list";
@@ -21,6 +21,7 @@ describe("live engine (mocked fetch)", () => {
     expect(r.engine).toBe("live");
     const [url, init] = f.mock.calls[0] as unknown as [string, RequestInit];
     expect(url).toBe("https://example.test/v1/chat/completions");
+    expect(init).toMatchObject({ cache: "no-store", redirect: "error" });
     expect(JSON.parse(init.body as string).response_format.type).toBe("json_schema");
   });
   it("retries with json_object after a 400", async () => {
@@ -52,5 +53,40 @@ describe("live engine (mocked fetch)", () => {
     const r = await classifyLive(text, "Q2", cfg, f as unknown as typeof fetch);
     expect(r.misconceptionId).toBe("abstain");
     expect(r.reason).toMatch(/word-for-word/);
+  });
+  it("accepts only approved HTTPS origins in procedure inputs", () => {
+    vi.stubEnv("LIVE_PROVIDER_ORIGINS", "https://approved.example.test");
+    try {
+      const allows = (baseUrl: string) => LiveConfigSchema.safeParse({ ...cfg, baseUrl }).success;
+      expect(allows("https://api.openai.com/v1")).toBe(true);
+      expect(allows("https://approved.example.test/v1")).toBe(true);
+      expect(allows("https://example.test/v1")).toBe(false);
+      expect(allows("http://approved.example.test/v1")).toBe(false);
+      expect(allows("https://approved.example.test/v1?test=1")).toBe(false);
+      expect(allows("invalid")).toBe(false);
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+  it("times out when the provider returns headers without completing the body", async () => {
+    vi.useFakeTimers();
+    try {
+      const pending = classifyLive(text, "Q2", cfg, async (_url, init) =>
+        new Response(new ReadableStream({
+          start(stream) {
+            init?.signal?.addEventListener("abort", () => stream.error(init.signal?.reason));
+          },
+        })),
+      );
+      await vi.advanceTimersByTimeAsync(TIMEOUT_MS);
+      await expect(pending).resolves.toMatchObject({ misconceptionId: "abstain", reason: "Live engine error: timed out" });
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+  it("redacts provider-supplied reasons before exposing them", async () => {
+    const reason = `Mixed ideas. Contact demo@example.test. Key ${cfg.apiKey}`;
+    const r = await classifyLive(text, "Q2", cfg, async () => reply({ ...good, reason }));
+    expect(r.reason).toBe("Model: Mixed ideas. Contact [email]. Key [redacted]");
   });
 });
