@@ -1,10 +1,18 @@
 import { z } from "zod";
+import { redact } from "@/domain/redact";
 import { TAXONOMY } from "@/domain/taxonomy";
 import { MISCONCEPTION_IDS, type QuestionId } from "@/domain/types";
 import { abstain, validateResult, type EngineResult } from "../contract";
 
+const ProviderUrl = z.url({ protocol: /^https$/, normalize: true }).max(300).refine((value) => {
+  const url = URL.parse(value);
+  if (!url || url.username || url.password || url.search || url.hash) return false;
+  const configured = (process.env.LIVE_PROVIDER_ORIGINS ?? "").split(",").map((origin) => origin.trim());
+  return url.origin === "https://api.openai.com" || configured.includes(url.origin);
+}, "Use an approved HTTPS provider base URL without credentials, query, or fragment");
+
 export const LiveConfigSchema = z.object({
-  baseUrl: z.url().max(300),
+  baseUrl: ProviderUrl,
   model: z.string().trim().min(1).max(120),
   apiKey: z.string().min(1).max(400),
 });
@@ -65,24 +73,26 @@ export async function classifyLive(
         { role: "user", content: `Question: ${questionId}\nReport: ${text}` },
       ],
     });
-  const call = async (format: object) => {
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
-    try {
-      return await fetchFn(url, {
-        method: "POST",
-        headers: { "content-type": "application/json", authorization: `Bearer ${cfg.apiKey}` },
-        body: body(format),
-        signal: ctrl.signal,
-      });
-    } finally {
-      clearTimeout(timer);
-    }
-  };
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  const call = (format: object) => fetchFn(url, {
+    method: "POST",
+    headers: { "content-type": "application/json", authorization: `Bearer ${cfg.apiKey}` },
+    body: body(format),
+    signal: controller.signal,
+    cache: "no-store",
+    redirect: "error",
+  });
   try {
     let res = await call({ type: "json_schema", json_schema: { name: "stuck_report_label", strict: true, schema: SCHEMA } });
-    if (res.status === 400) res = await call({ type: "json_object" });
-    if (!res.ok) return abstain("live", `Live engine error: ${res.status}`);
+    if (res.status === 400) {
+      await res.body?.cancel();
+      res = await call({ type: "json_object" });
+    }
+    if (!res.ok) {
+      await res.body?.cancel();
+      return abstain("live", `Live engine error: ${res.status}`);
+    }
     const data = (await res.json()) as { choices?: { message?: { content?: string } }[] };
     const content = data.choices?.[0]?.message?.content;
     if (!content) return abstain("live", "Live engine error: empty reply");
@@ -93,10 +103,15 @@ export async function classifyLive(
       return abstain("live", "Live engine error: reply was not JSON");
     }
     const p = parsed as Record<string, unknown>;
-    if (p && typeof p === "object" && p.reason === "") delete p.reason;
+    if (p && typeof p === "object" && typeof p.reason === "string") {
+      const reason = redact(p.reason.replaceAll(cfg.apiKey, "[redacted]").slice(0, 200));
+      p.reason = reason ? `Model: ${reason}` : undefined;
+    }
     return validateResult(text, { ...p, engine: "live" }, "live");
   } catch (e) {
     const timeout = (e as Error)?.name === "AbortError";
     return abstain("live", timeout ? "Live engine error: timed out" : "Live engine error: network");
+  } finally {
+    clearTimeout(timer);
   }
 }
