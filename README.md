@@ -103,9 +103,10 @@ npm run dev        # http://localhost:3000
 
 Other commands include `npm test`, `npm run typecheck`, `npm run eval` and `npm run build && npm run start`.
 
-Walkthrough: `/` → "I'm a student" → submit one sentence → "I'm a TA" → `/ta` → `/ta/compare` → click the top
-misconception → confirm or move a report → `/ta/review` → assign one → `/ta/eval`. "Demo → Reset demo data" in
-the TA header restores the 60 seed reports.
+From the home page, choose "I'm a student" and submit a fictional report. Use the Office Hours Heatmap
+wordmark to return home and choose "I'm a TA". Open Compare, select the top misconception, then confirm or
+move a report. Open Review to assign an abstention, then open Eval. "Demo → Reset demo data" in the TA
+header restores the 60 seed reports.
 
 ## Sample mode vs live mode
 
