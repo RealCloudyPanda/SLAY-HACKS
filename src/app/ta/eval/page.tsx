@@ -25,6 +25,7 @@ export default function EvalPage() {
         </div>
       </div>
       <p className="note">Synthetic held-out set, 20 items: small, indicative only. One item is 5 percentage points.</p>
+      <div id="live-eval-slot" />
       {q.data ? <EvalView r={q.data} /> : <p className="muted">{q.error ? q.error.message : "Running evaluation…"}</p>}
     </div>
   );
