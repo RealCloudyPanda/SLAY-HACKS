@@ -3,12 +3,16 @@ import { MISCONCEPTION_IDS, type EngineKind } from "@/domain/types";
 
 export const MisconceptionIdEnum = z.enum(MISCONCEPTION_IDS);
 export const LabelSchema = z.union([MisconceptionIdEnum, z.literal("abstain")]);
+const CandidatesSchema = z.array(z.object({
+  id: MisconceptionIdEnum,
+  score: z.number().min(0).max(1),
+})).max(2).refine((candidates) => new Set(candidates.map((candidate) => candidate.id)).size === candidates.length);
 
 export const EngineResultSchema = z.object({
   misconceptionId: LabelSchema,
   evidenceExcerpt: z.string(),
   confidence: z.number().min(0).max(1),
-  candidates: z.array(z.object({ id: MisconceptionIdEnum, score: z.number() })).max(2),
+  candidates: CandidatesSchema,
   engine: z.enum(["sample", "live"]),
   reason: z.string().optional(),
 });
@@ -29,10 +33,7 @@ export function validateResult(text: string, raw: unknown, engine: EngineKind): 
   const parsed = EngineResultSchema.safeParse(raw);
   if (!parsed.success) {
     const maybe = raw as { candidates?: unknown } | null;
-    const cands = z
-      .array(z.object({ id: MisconceptionIdEnum, score: z.number() }))
-      .max(2)
-      .safeParse(maybe?.candidates);
+    const cands = CandidatesSchema.safeParse(maybe?.candidates);
     const id = (raw as { misconceptionId?: unknown } | null)?.misconceptionId;
     const unknownId = typeof id === "string" && !LabelSchema.safeParse(id).success;
     return abstain(
