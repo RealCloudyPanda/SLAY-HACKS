@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import { useId, useRef, useState } from "react";
+import { useId, useState } from "react";
 import { QUESTIONS } from "@/domain/questions";
 import type { QuestionId } from "@/domain/types";
 import { useInvalidateAll } from "@/lib/useInvalidate";
@@ -18,7 +18,6 @@ export function SubmitForm() {
   const [done, setDone] = useState(false);
   const textId = useId();
   const hintId = useId();
-  const ref = useRef<HTMLTextAreaElement>(null);
   const submit = useMutation(trpc.report.submit.mutationOptions({
     onSuccess: () => {
       void invalidate();
@@ -72,10 +71,7 @@ export function SubmitForm() {
                 name="question"
                 value={q.id}
                 checked={questionId === q.id}
-                onChange={() => {
-                  setQuestionId(q.id);
-                  ref.current?.focus();
-                }}
+                onChange={() => setQuestionId(q.id)}
               />
               {q.short}
             </label>
@@ -95,7 +91,6 @@ export function SubmitForm() {
         </div>
         <textarea
           id={textId}
-          ref={ref}
           className="textarea"
           value={text}
           maxLength={MAX + 40}
