@@ -49,3 +49,9 @@ Misses (2):
 ## Later runs
 
 (Appended below; Run 1 above stays as recorded.)
+
+### Run 2: 2026-11-20, commit `c4bc6ca`
+
+After adding TA exemplars to the Sample engine: identical numbers to Run 1 (overall 18/20, accuracy when
+answered 15/15, coverage 15/16, abstain 4/20, ambiguous caught 3/4, baseline 30.0%). The eval uses a clean
+engine without exemplars.
