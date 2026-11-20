@@ -43,7 +43,10 @@ export default function ReviewPage() {
                 </div>
               </div>
               <div className="report-actions">
-                {r.assignment.candidates.map((c) => (
+                {r.assignment.candidates.filter((c) => c.score >= 0.1).length === 0 ? (
+                  <span className="small muted" style={{ alignSelf: "center" }}>No strong guess</span>
+                ) : null}
+                {r.assignment.candidates.filter((c) => c.score >= 0.1).map((c) => (
                   <button
                     key={c.id}
                     className="btn btn-sm"
@@ -55,7 +58,7 @@ export default function ReviewPage() {
                     <span className="num muted">{c.score.toFixed(2)}</span>
                   </button>
                 ))}
-                <MoveMenu options={misconceptions} onPick={(to) => move.mutate({ reportId: r.id, to })} label="Other…" disabled={move.isPending} />
+                <MoveMenu options={misconceptions} onPick={(to) => move.mutate({ reportId: r.id, to })} label="Move to…" disabled={move.isPending} />
               </div>
             </li>
           ))}

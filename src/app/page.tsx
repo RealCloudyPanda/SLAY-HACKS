@@ -47,7 +47,7 @@ export default function Landing() {
             </div>
           ))}
           <p className="small" style={{ marginTop: 12 }}>
-            Three questions, <b style={{ color: "var(--pencil)" }}>one explanation</b>: {SHEET[0].m.toLowerCase()}.
+            Three questions, <b style={{ color: "var(--pencil)" }}>one explanation</b>: &ldquo;{SHEET[0].m}&rdquo;.
           </p>
         </div>
       </section>
