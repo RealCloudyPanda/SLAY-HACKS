@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useId, useRef, useState } from "react";
 import { QUESTIONS } from "@/domain/questions";
 import type { QuestionId } from "@/domain/types";
+import { useInvalidateAll } from "@/lib/useInvalidate";
 import { useTRPC } from "@/trpc/client";
 
 const MIN = 10;
@@ -11,13 +12,19 @@ const MAX = 280;
 
 export function SubmitForm() {
   const trpc = useTRPC();
+  const invalidate = useInvalidateAll();
   const [questionId, setQuestionId] = useState<QuestionId | null>(null);
   const [text, setText] = useState("");
   const [done, setDone] = useState(false);
   const textId = useId();
   const hintId = useId();
   const ref = useRef<HTMLTextAreaElement>(null);
-  const submit = useMutation(trpc.report.submit.mutationOptions({ onSuccess: () => setDone(true) }));
+  const submit = useMutation(trpc.report.submit.mutationOptions({
+    onSuccess: () => {
+      void invalidate();
+      setDone(true);
+    },
+  }));
 
   const len = text.trim().length;
   const valid = !!questionId && len >= MIN && len <= MAX;
@@ -53,7 +60,7 @@ export function SubmitForm() {
       className="stack"
       onSubmit={(e) => {
         e.preventDefault();
-        if (valid && questionId) submit.mutate({ questionId, text });
+        if (valid && questionId && !submit.isPending) submit.mutate({ questionId, text });
       }}
     >
       <fieldset style={{ border: 0, padding: 0, margin: 0 }} className="stack">

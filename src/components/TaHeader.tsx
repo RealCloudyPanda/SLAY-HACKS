@@ -21,7 +21,7 @@ export function TaHeader() {
   const trpc = useTRPC();
   const qc = useQueryClient();
   const pathname = usePathname();
-  const summary = useQuery(trpc.dashboard.summary.queryOptions());
+  const summary = useQuery(trpc.dashboard.summary.queryOptions(undefined, { refetchInterval: 5_000 }));
   const review = summary.data?.totals.review ?? 0;
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
