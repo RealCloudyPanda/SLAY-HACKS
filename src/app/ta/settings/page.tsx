@@ -48,7 +48,7 @@ export default function SettingsPage() {
           <label className="radio-card">
             <input type="radio" name="engine" checked={draft.engine === "live"} onChange={() => set({ engine: "live" })} />
             <span>
-              <b>Live engine</b> <span className="muted">· any OpenAI-compatible model</span>
+              <b>Live engine</b> <span className="muted">· approved OpenAI-compatible provider</span>
               <span className="small muted" style={{ display: "block" }}>
                 Uses your own key. Output passes the same validator: evidence must be a word-for-word quote.
               </span>
@@ -83,8 +83,9 @@ export default function SettingsPage() {
               </div>
             </div>
             <p className="note">
-              Your key stays in this browser&apos;s localStorage. It is sent to this app&apos;s server only while a request runs,
-              forwarded to the URL above, and never stored or logged.
+              OpenAI is enabled by default. Other HTTPS provider origins require server configuration. The browser
+              saves your API key in localStorage and sends it through the demo server to the selected provider.
+              Live reruns send redacted report text and question IDs. Use synthetic data only.
             </p>
             <div className="row">
               <button

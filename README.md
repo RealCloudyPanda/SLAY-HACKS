@@ -5,8 +5,8 @@ not which homework question got the most complaints.
 
 ![TA dashboard: teach-first list and misconception × question heatmap](docs/images/hero.png)
 
-> Built for SLAY HACKS 2026. Every report, question and number in this repo comes from **synthetic demo
-> data** written for the project. Runs fully offline with zero configuration.
+> Built for SLAY HACKS 2026. The bundled reports, questions and evaluation use **synthetic demo data**.
+> Sample mode runs offline with zero configuration after dependencies are installed.
 
 ## The problem
 
@@ -20,8 +20,8 @@ by only 6 students. Explaining "A* stops when the goal is generated" reaches 14 
 
 ## What it does
 
-- **Student form** (`/submit`): pick a question, write one sentence, submit. No account, no name, and the
-  student never sees a label. Emails, long numbers and "my name is…" are redacted before storage.
+- **Student form** (`/submit`): pick a question, write one sentence, submit. The form asks for no account or
+  name and returns no label. Basic redaction handles common identifiers before storage.
 - **Teach-first list** (`/ta`): misconceptions ranked by how many students one explanation reaches, each with
   a reason line ("14 reports across Q2, Q4, Q5"), next to a misconception × question heatmap.
 - **Cluster detail** (`/ta/m/[id]`): every report in a misconception, with the engine's evidence
@@ -33,7 +33,7 @@ by only 6 students. Explaining "A* stops when the goal is generated" reaches 14 
   "first explanation reaches N students" for each and a template sentence (not AI-written) stating the gap.
 - **Evaluation** (`/ta/eval`, `npm run eval`): measured metrics on a held-out synthetic set, a confusion
   table, and every miss.
-- **Optional live model** (`/ta/settings`): plug in any OpenAI-compatible endpoint with your own key.
+- **Optional live model** (`/ta/settings`): use an approved OpenAI-compatible endpoint with your own key.
 
 | Compare view | Cluster detail |
 |---|---|
@@ -78,8 +78,8 @@ taxonomy, quote evidence that is an exact substring of the report, and clear a c
 becomes an abstain with a reason (ADR 0003).
 
 **Live engine** (optional): `POST {baseUrl}/chat/completions` with a strict JSON schema, falling back to
-`json_object` on HTTP 400; 20 s timeout, max 6 concurrent; any failure abstains with "Live engine error:
-{status}" and never echoes the key.
+`json_object` on HTTP 400. Each report has a 20-second deadline, with up to six requests in flight per
+batch. Transport failures become abstentions with a short error reason.
 
 ## Sponsor tech & why it is necessary
 
@@ -111,14 +111,16 @@ the TA header restores the 60 seed reports.
 
 | | Sample mode (default) | Live mode (optional) |
 |---|---|---|
-| Setup | None | `/ta/settings`: base URL, model, API key |
-| Engine | Deterministic Sample engine | Any OpenAI-compatible Chat Completions model |
-| Network | None | Only while a re-run or live eval runs |
-| Labelled in UI | "Sample engine · offline" badge | "Live engine · {model}" badge |
-| Key storage | n/a | This browser's localStorage only; forwarded per request, never stored or logged by the server |
+| Setup | None | `/ta/settings` takes a base URL, model and API key |
+| Engine | Deterministic Sample engine | Approved OpenAI-compatible Chat Completions provider |
+| Network | No external requests | Connection tests, reruns and live eval call the provider |
+| Labelled in UI | "Sample engine · offline" badge | "Last live run · {model}" badge after a live rerun |
+| Key storage | n/a | Browser localStorage. Each live request sends the key through the demo server to the provider. |
 
-Sample mode makes the whole demo clickable with no key. The live engine was tested only against a mocked
-`fetch` (see Known limitations).
+OpenAI's HTTPS origin is enabled by default. A server operator can approve additional trusted HTTPS origins
+with the comma-separated `LIVE_PROVIDER_ORIGINS` environment variable. New reports always use Sample.
+Live reruns send redacted report text and question IDs to the provider. The provider handles requests under
+its own terms. Live verification used mocked `fetch`.
 
 ## Measured results
 
@@ -145,7 +147,7 @@ check, not as evidence about real student writing. Both misses are listed on `/t
 | Innovation & originality (25) | `/ta/compare`: grouping by misconception across questions picks a different first explanation; abstain by default (ADR 0001, 0003) |
 | Technical implementation (25) | Typed tRPC v11 routers (`src/trpc/routers`), zod-validated engine contract, deterministic engine, 63 tests, `npm run eval` |
 | Real-world impact (20) | `/ta` teach-first list: the TA's ten minutes; "first explanation reaches N students"; works offline with zero setup |
-| AI integration & responsible use (15) | Verbatim evidence (`/ta/m/…`), abstain + review queue (`/ta/review`), logged corrections, no labels to students, redaction, held-out numbers with misses (`/ta/eval`), key never stored (`/ta/settings`) |
+| AI integration & responsible use (15) | Verbatim evidence (`/ta/m/…`), abstain + review queue (`/ta/review`), logged corrections, no labels on the student form, basic redaction, evaluation with misses (`/ta/eval`), and live data disclosure (`/ta/settings`) |
 | UX & presentation (15) | "Marked-up answer sheet" design: one pencil-red accent, Geist type, tabular numbers, visible focus rings, heatmap cells with aria-labels and printed counts, 390px student form |
 
 ## Project structure
@@ -169,8 +171,8 @@ docs/             SPEC, PLAN, GRILL, RESEARCH, EVAL, adr/, images/
 
 - **In-memory, per-instance state.** Reports and corrections live in server memory and reset on restart; on a
   serverless host each instance has its own copy. No database by design.
-- **No authentication.** Anyone with the URL can open the TA pages. Fine for a demo, not for a class.
-- **Synthetic data only.** Taxonomy, homework questions and all 80 reports were written for the project.
+- **Public demo.** Anyone with the URL can view or change TA data. Use fictional reports only. Basic redaction
+  can miss personal details, and the demo counts reports without deduplicating by student.
 - **Small eval set.** 20 held-out items; one item is 5 percentage points. See the caveats above.
 - **Live engine verified only with a mocked `fetch`** (happy path, 400 retry, HTTP error, timeout, invented
   evidence). It has not been run against a real provider in this repo.

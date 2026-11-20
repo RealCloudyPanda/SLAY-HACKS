@@ -18,8 +18,8 @@ export default function SubmitPage() {
       </div>
       <SubmitForm />
       <p className="small muted rule-top" style={{ paddingTop: 16 }}>
-        Privacy: no account, no name. Emails, long numbers and &ldquo;my name is…&rdquo; are removed before your sentence is
-        stored. Only the TA sees reports.
+        This public demo is for synthetic reports only. Anyone can open the TA dashboard. Basic redaction removes
+        common identifiers before storage. Leave out names and other personal details.
       </p>
     </main>
   );

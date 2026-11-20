@@ -35,8 +35,7 @@ export function SubmitForm() {
       <div className="success" role="status">
         <h2>Thanks. Your TA will see it before office hours.</h2>
         <p className="small muted">
-          Your sentence was stored without your name. You won&apos;t see how it was grouped; that&apos;s for the TA to decide
-          what to explain.
+          Your sentence is available in the TA demo. You won&apos;t see a label on this form.
         </p>
         <div>
           <button

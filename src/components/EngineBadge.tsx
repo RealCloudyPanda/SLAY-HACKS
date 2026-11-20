@@ -2,17 +2,17 @@
 
 import { useLiveConfig } from "@/lib/liveConfig";
 
-/** Shows which engine produced the labels on screen; Sample is the offline default. */
+/** Shows the most recent batch engine. New submissions use Sample. */
 export function EngineBadge({ serverEngine }: { serverEngine?: { kind: "sample" | "live"; model?: string } }) {
   const { isLiveReady, config } = useLiveConfig();
   const live = serverEngine?.kind === "live";
   return (
     <span
       className={`tag ${live ? "engine-live" : "engine-sample"}`}
-      title={live ? "Labels on screen came from your live model" : "Deterministic offline engine. No key, no network."}
+      title={live ? "The most recent batch used a live model. New submissions use the Sample engine." : "Deterministic offline engine. No key, no network."}
     >
       <span className="tag-dot" aria-hidden />
-      {live ? `Live engine · ${serverEngine?.model ?? config.model}` : "Sample engine · offline"}
+      {live ? `Last live run · ${serverEngine?.model ?? config.model}` : "Sample engine · offline"}
       {!live && isLiveReady ? <span className="sr-only">(live model configured)</span> : null}
     </span>
   );
