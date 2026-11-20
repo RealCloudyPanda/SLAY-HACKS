@@ -14,6 +14,8 @@ export const MIN_WORDS = 5;
 export const MIX = 0.45;
 export const W_CUE = 0.65;
 export const W_SIM = 0.35;
+/** Weight of the closest TA exemplar (nearest-neighbour vote). Only active when a TA has corrected something. */
+export const W_EX = 0.6;
 
 export type Exemplars = Partial<Record<MisconceptionId, string[]>>;
 
@@ -27,17 +29,27 @@ export function createSampleEngine(exemplars: Exemplars = {}): SampleEngine {
   const profiles = TAXONOMY.map((t) =>
     [t.defaultName, t.definition, PROFILE_TERMS[t.id], ...(exemplars[t.id] ?? [])].join(" "),
   );
-  const tfidf = new TfIdf(profiles);
+  const exDocs = ids.flatMap((id, idx) => (exemplars[id] ?? []).map((text) => ({ idx, text })));
+  const tfidf = new TfIdf([...profiles, ...exDocs.map((e) => e.text)]);
 
-  const scoreOne = (text: string, idx: number, sims?: number[]) => {
-    const s = sims ?? tfidf.similarities(text);
-    return W_CUE * squash(cueSum(normalize(text), ids[idx])) + W_SIM * s[idx];
+  /** Per misconception: [profile similarity, best exemplar similarity]. */
+  const sims = (text: string) => {
+    const all = tfidf.similarities(text);
+    const ex = ids.map(() => 0);
+    exDocs.forEach((e, j) => (ex[e.idx] = Math.max(ex[e.idx], all[ids.length + j])));
+    return { profile: all.slice(0, ids.length), ex };
+  };
+
+  const scoreOne = (text: string, idx: number, pre?: ReturnType<typeof sims>) => {
+    const s = pre ?? sims(text);
+    const base = W_CUE * squash(cueSum(normalize(text), ids[idx])) + W_SIM * s.profile[idx];
+    return Math.max(base, W_EX * s.ex[idx]);
   };
 
   const scores = (text: string) => {
-    const sims = tfidf.similarities(text);
+    const pre = sims(text);
     return ids
-      .map((id, i) => ({ id, score: round(scoreOne(text, i, sims), 3) }))
+      .map((id, i) => ({ id, score: round(scoreOne(text, i, pre), 3) }))
       .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id));
   };
 
