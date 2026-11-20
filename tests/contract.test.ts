@@ -38,6 +38,15 @@ describe("validateResult", () => {
     expect(r.misconceptionId).toBe("abstain");
     expect(r.reason).toMatch(/below/);
   });
+  it("drops out-of-range or duplicate hints when rejecting engine output", () => {
+    const candidate = good.candidates[0];
+    for (const candidates of [[{ ...candidate, score: 1.1 }], [candidate, candidate]]) {
+      expect(validateResult(text, { ...good, candidates }, "live")).toMatchObject({
+        misconceptionId: "abstain",
+        candidates: [],
+      });
+    }
+  });
   it("garbage input → abstain", () => {
     for (const g of [null, 42, "hello", { foo: 1 }, []]) {
       expect(validateResult(text, g, "sample").misconceptionId).toBe("abstain");
