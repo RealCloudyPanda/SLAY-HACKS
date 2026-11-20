@@ -211,8 +211,9 @@ Writing rules for the data author:
 
 Gold: goal 3, consistent 3, any-optimal 3, g-h 3, closed 2, bigger-h 2, abstain 4. Spread across Q1 to Q5 and
 NS. Written in **one commit before any classifier tuning**, using different wording from the seed set
-(e.g. "fringe", "explored set", "cost-so-far", "estimate", "pop vs push", "overshoots"). Never imported by
-UI code except `/ta/eval`. Never used to tune cues or thresholds (GRILL Q22, Q23).
+(e.g. "fringe", "explored set", "cost-so-far", "estimate", "pop vs push", "overshoots"). Used by eval only.
+Threshold tuning ran on the seed set. The same author wrote the sets and classifier, and the synonym list
+was chosen to cover held-out vocabulary. See [the evaluation log](EVAL.md).
 
 ## 6. Engine contract and engines
 
@@ -340,7 +341,7 @@ text (no colour-only meaning). Mobile: `/submit` is single-column at 375px; TA p
 | 0:55 | `/ta/compare` | "Grouping by question says start with Q4. But the biggest idea inside Q4 reaches six students. Explaining goal-test timing reaches fourteen, across Q2, Q4 and Q5." |
 | 1:25 | `/ta/m/goal-test-on-generation` | "Every assignment shows its evidence, quoted word for word, and a confidence." Rename the misconception; confirm one report. |
 | 1:50 | `/ta/review` | "When it isn't sure, it abstains. This one mixes two ideas, so a human decides." Assign with one click; count updates. (If exemplars shipped: submit a paraphrase, it lands correctly.) |
-| 2:15 | `/ta/eval` | "We measured it on a held-out synthetic set it was never tuned on: here are the real numbers, including what it got wrong." Read the numbers on screen; do not script them. |
+| 2:15 | `/ta/eval` | "We measured it on 20 synthetic examples. See every miss. The synonym list reflects vocabulary in the test set." Read the numbers on screen. |
 | 2:40 | `/ta/settings` | "It runs fully offline by default. Bring your own model key if you want; it stays in your browser." |
 | 2:50 | `/ta` | "Office Hours Heatmap: explain the right thing first." |
 

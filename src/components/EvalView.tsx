@@ -17,7 +17,7 @@ export function EvalView({ r }: { r: EvalReport }) {
       </div>
       <div className="metrics">
         <MetricCard label="Overall agreement" value={m.overallAgreement} detail={`${c.correct} of ${m.n} match the gold label (abstain counts as a label)`} />
-        <MetricCard label="Accuracy when answered" value={m.accuracyWhenAnswered} detail={`${c.answeredCorrect} of ${c.answered} answered items correct`} />
+        <MetricCard label="Accuracy when answered" value={m.accuracyWhenAnswered} detail={`${c.answeredCorrect} of ${c.answered} correct among answered items with a clear gold label`} />
         <MetricCard label="Coverage" value={m.coverage} detail={`${c.answered} of ${c.goldNonAbstain} clear reports got a label`} />
         <MetricCard label="Abstain rate" value={m.abstainRate} detail={`${c.abstained} of ${m.n} sent to review`} />
         <MetricCard label="Ambiguous caught" value={m.ambiguousCaught} detail={`of ${c.goldAbstain} genuinely ambiguous reports`} />

@@ -14,7 +14,8 @@ export default function EvalPage() {
         <div className="stack" style={{ gap: 6 }}>
           <h1>Does the engine get it right?</h1>
           <p className="muted" style={{ maxWidth: "70ch" }}>
-            Measured on a held-out set the engine was never tuned on. Same numbers as <span className="mono">npm run eval</span>.
+            The Sample results match <span className="mono">npm run eval</span>. The synthetic set shares an author with the
+            classifier, and the synonym list reflects its vocabulary.
           </p>
         </div>
         <div className="toolbar">

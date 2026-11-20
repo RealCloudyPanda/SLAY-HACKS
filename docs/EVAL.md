@@ -7,7 +7,8 @@ file). Run it yourself with `npm run eval`.
 **Honest caveats.** 20 items is small: one item is 5 percentage points. The same author (AI-assisted, see README)
 wrote the seed set, the held-out set and the cue patterns in one session, and the spec's synonym list (e.g.
 "fringe", "explored set", "cost-so-far", "overshoots") was chosen to cover held-out vocabulary. So these numbers
-are an upper-bound sanity check, not evidence of performance on real student writing.
+are a sanity check on these synthetic examples. Accuracy when answered uses only items with a clear gold
+label. Of 16 issued labels, 15 match the gold label across the full set.
 
 ## Run 1 (frozen, do not edit)
 

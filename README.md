@@ -90,7 +90,7 @@ No sponsor APIs are used. The stack is open source:
 | **tRPC v11** + **TanStack Query** | One typed contract from the store to every screen; every correction invalidates dashboard, cluster, review and compare so counts update without reloads. |
 | **zod** | Validates tRPC inputs and is the AI output gate: unquoted or unknown labels can't reach the TA. |
 | **Next.js 16 (App Router)** | Serves UI and API in one process; `npm install && npm run dev` is the whole setup. |
-| **Vitest** + **tsx** | 63 unit tests and the `npm run eval` script. |
+| **Vitest** + **tsx** | Unit and tRPC transport tests, plus the `npm run eval` script. |
 
 ## Quickstart
 
@@ -101,7 +101,7 @@ npm install
 npm run dev        # http://localhost:3000
 ```
 
-Other commands: `npm test` (Vitest), `npm run eval` (held-out evaluation), `npm run build && npm run start`.
+Other commands include `npm test`, `npm run typecheck`, `npm run eval` and `npm run build && npm run start`.
 
 Walkthrough: `/` → "I'm a student" → submit one sentence → "I'm a TA" → `/ta` → `/ta/compare` → click the top
 misconception → confirm or move a report → `/ta/review` → assign one → `/ta/eval`. "Demo → Reset demo data" in
@@ -138,14 +138,16 @@ From `npm run eval`, first frozen run, 2026-11-20, commit `f5a6f56` (full output
 
 Read these with care: the same author (AI-assisted) wrote the seed set, the held-out set and the cue patterns
 in one session, and the spec's synonym list was chosen to cover held-out vocabulary. Treat them as a sanity
-check, not as evidence about real student writing. Both misses are listed on `/ta/eval`.
+check on synthetic examples. Accuracy when answered is limited to reports with a clear gold label. Across all
+16 issued labels, 15 match the gold label because the engine also labelled one ambiguous report. Both misses
+are listed on `/ta/eval`.
 
 ## Judging criteria → where to see proof
 
 | Criterion (weight) | Where to look |
 |---|---|
 | Innovation & originality (25) | `/ta/compare`: grouping by misconception across questions picks a different first explanation; abstain by default (ADR 0001, 0003) |
-| Technical implementation (25) | Typed tRPC v11 routers (`src/trpc/routers`), zod-validated engine contract, deterministic engine, 63 tests, `npm run eval` |
+| Technical implementation (25) | Typed tRPC v11 routers (`src/trpc/routers`), zod-validated engine contract, deterministic engine, `npm test` and `npm run eval` |
 | Real-world impact (20) | `/ta` teach-first list: the TA's ten minutes; "first explanation reaches N students"; works offline with zero setup |
 | AI integration & responsible use (15) | Verbatim evidence (`/ta/m/…`), abstain + review queue (`/ta/review`), logged corrections, no labels on the student form, basic redaction, evaluation with misses (`/ta/eval`), and live data disclosure (`/ta/settings`) |
 | UX & presentation (15) | "Marked-up answer sheet" design: one pencil-red accent, Geist type, tabular numbers, visible focus rings, heatmap cells with aria-labels and printed counts, 390px student form |
@@ -186,7 +188,7 @@ docs/             SPEC, PLAN, GRILL, RESEARCH, EVAL, adr/, images/
 
 This project was built with significant AI assistance. An AI coding agent planned the product (spec, design
 interview, ADRs), wrote the code, the synthetic data, the tests and this README, working under the author's
-direction. The evaluation numbers come from actually running `npm run eval`; nothing was typed in by hand.
+direction. The evaluation table comes from the recorded `npm run eval` output.
 
 ## License
 
