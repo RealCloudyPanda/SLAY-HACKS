@@ -4,6 +4,7 @@ import { clusterRouter } from "./cluster";
 import { compareRouter } from "./compare";
 import { correctionRouter } from "./correction";
 import { dashboardRouter } from "./dashboard";
+import { engineRouter } from "./engine";
 import { evalRouter } from "./eval";
 import { reportRouter } from "./report";
 import { reviewRouter } from "./review";
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
   compare: compareRouter,
   admin: adminRouter,
   eval: evalRouter,
+  engine: engineRouter,
 });
 
 export type AppRouter = typeof appRouter;
