@@ -12,7 +12,7 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest run",
-    "eval": "tsx scripts/eval.ts",
+    "eval": "node --import tsx scripts/eval.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
