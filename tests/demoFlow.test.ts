@@ -62,3 +62,21 @@ it("moves an abstention out of review and updates the dashboard, compare view, a
   expect(updatedCompare.reach.byMisconception).toBe(compare.reach.byMisconception + 1);
   expect(after.recentCorrections[0]).toMatchObject({ kind: "move", reportId: report.id, to });
 });
+
+it("exports current brief evidence after a fresh abstention is corrected and renamed", async () => {
+  const text = "I got really lost in the middle";
+  await client.report.submit.mutate({ questionId: "Q4", text });
+  const report = (await client.review.list.query()).reports.find((r) => r.text === text)!;
+  expect(report.assignment.label).toBe("abstain");
+  const before = await client.dashboard.summary.query();
+  await client.correction.move.mutate({ reportId: report.id, to: "goal-test-on-generation" });
+  await client.correction.rename.mutate({ misconceptionId: "goal-test-on-generation", name: "Pop the goal before stopping" });
+  const after = await client.dashboard.summary.query();
+  const concept = after.briefOptions.find((c) => c.id === "goal-test-on-generation")!;
+  expect(after.totals.review).toBe(before.totals.review - 1);
+  expect(concept.name).toBe("Pop the goal before stopping");
+  expect(concept.evidence.find((e) => e.id === report.id)).toMatchObject({ text, status: "TA checked", excerpt: "" });
+  expect(concept.confirmed).toBeGreaterThan(0);
+  store.reset();
+  expect((await client.dashboard.summary.query()).briefOptions.flatMap((c) => c.evidence).some((e) => e.text === text)).toBe(false);
+});
