@@ -37,3 +37,32 @@ Draft for the owner. Nothing here has been submitted. Rules and overview checked
 **Elevator pitch** (≤200 chars):
 
 > Students say where they got stuck in one sentence. TAs see which misconception to explain first, with the students' own words as evidence, and it abstains instead of guessing.
+
+**About the project** (Devpost's markdown field):
+
+```markdown
+## The problem
+Before office hours a TA has minutes to decide what to explain. Student notes get sorted by homework
+question, but one misconception spreads across questions and one question hides several. In the demo data,
+Q4 has the most complaints (17), yet its most common idea is shared by only 6 students, while explaining
+"A* stops when the goal is generated" reaches 14 students across Q2, Q4 and Q5.
+
+## What it does
+- **Student form:** pick a question, write one sentence, submit. No account, no name, no label returned.
+- **Teach-first list and heatmap:** misconceptions ranked by how many students one explanation reaches.
+- **Cluster detail:** every report with the evidence quoted word for word, a confidence, and a teaching hint.
+- **Review queue:** vague or mixed reports are not guessed; a TA assigns them with one click.
+- **Compare view:** grouping by question vs by misconception, side by side.
+- **Evaluation page:** measured results on a held-out set, with every miss.
+
+## AI implementation
+The default **Sample engine** is deterministic and offline: synonym normalisation, weighted cue patterns and
+TF-IDF similarity to each misconception's definition and to TA-confirmed examples, with explicit abstain
+rules for short, weak, close or mixed matches. An optional **Live engine** calls an OpenAI-compatible
+endpoint with a strict JSON schema. Both pass the same zod validator: the label must come from the taxonomy
+and the evidence must be an exact substring of the student's sentence, or the result becomes an abstention.
+
+## Responsible use
+Synthetic demo data only, basic redaction before storage, no label shown to students, human corrections
+that are logged, abstention by default when unsure, and a measured evaluation that shows its misses. The live
+engine has only been tested with a mocked provider.
