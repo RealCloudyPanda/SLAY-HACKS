@@ -28,7 +28,7 @@ then stored and classified by the Sample engine. The student never sees the assi
 
 **F2. TA picks what to teach.** `/ta` → teach-first list (ranked misconceptions with reasons) + heatmap
 (misconceptions × questions) → click the top misconception → `/ta/m/[id]` shows every stuck report in it with
-the evidence excerpt highlighted and a confidence bar.
+the evidence excerpt highlighted and a heuristic match-support bar.
 
 **F3. TA corrects.** On a cluster page or in the review queue: Confirm, Move to…, Not this (reject → review
 queue), or rename the misconception inline. Every correction updates counts immediately and is appended to
@@ -38,7 +38,7 @@ the correction log. Corrected reports are never re-assigned by any engine re-run
 as hints and a reason ("Two misconceptions scored almost the same"). One click assigns.
 
 **F5. TA sees why misconception beats question number.** `/ta/compare` shows both groupings side by side
-and the "students reached by your first explanation" number for each.
+and the "reports supporting your first explanation" number for each.
 
 **F6. Anyone checks the AI.** `/ta/eval` runs the engine on the held-out set and shows measured metrics,
 a confusion table and every miss. Same numbers via `npm run eval`.
@@ -63,7 +63,7 @@ All TA screens share a header: product name, unit name ("Unit 3: Heuristic searc
 | `/ta` | Dashboard | Left (primary): **Teach-first list**, rank number, misconception name, count, reason line ("14 reports across Q2, Q4, Q5"), confirmed count. Right: **Heatmap**. Below: recent corrections (last 8). Toolbar: Refresh, Re-run with live model (only when Live configured). Empty state when 0 reports. |
 | `/ta/m/[id]` | Cluster detail | Inline-editable name (rename), definition, "What to say" one-line teaching hint (static, from taxonomy), counts by question, list of reports: full sentence with `<mark>` on evidence excerpt, question tag, confidence bar + number, source badge (AI · TA confirmed · TA moved), actions Confirm / Move to… (menu) / Not this. |
 | `/ta/review` | Review queue | Each item: sentence, question tag, reason, top-2 guesses with scores as one-click "Assign to X" buttons, plus "Move to…" for any other. Empty state: "Nothing waiting. Every report has a misconception." |
-| `/ta/compare` | Compare view | Two columns. Left "Grouped by question number": questions ranked by count; for the top question, its mix of misconceptions as a stacked bar. Right "Grouped by misconception": teach-first list. Headline numbers: "First explanation reaches N students" for each. One sentence of conclusion generated from the data (template, not AI). |
+| `/ta/compare` | Compare view | Two columns. Left "Grouped by question number": questions ranked by count; for the top question, its mix of misconceptions as a stacked bar. Right "Grouped by misconception": teach-first list. Headline numbers: "First explanation reaches N reports" for each. One sentence of conclusion generated from the data (template, not AI). |
 | `/ta/eval` | Evaluation | Engine used, run timestamp, held-out size, metric cards (section 7), naive baseline, confusion table (gold rows × predicted cols incl. abstain), list of misses with sentence and both labels, thresholds used, "Synthetic held-out set, 20 items: small, indicative only". Button "Run again". If Live configured, a second button "Evaluate live engine" (runs on held-out, shows its own numbers). |
 | `/ta/settings` | Settings | Sample / Live selector, approved HTTPS base URL (default `https://api.openai.com/v1`), model, key field with show toggle, "Test connection", "Forget key", and disclosure of browser key storage and live provider requests. |
 
@@ -192,7 +192,7 @@ never shown in the UI. Designed distribution (gold labels):
 
 Designed story (on gold labels; the dashboard shows engine labels, which may differ, and that is fine):
 by question number Q4 is top (17), but the most common idea inside Q4 (`closed-never-reopened`) reaches only
-6 students; by misconception, `goal-test-on-generation` reaches 14 across Q2, Q4 and Q5.
+7 reports across the full cohort (6 inside Q4); by misconception, `goal-test-on-generation` has 14 supporting reports across Q2, Q4 and Q5.
 
 Writing rules for the data author:
 - First person, informal, one sentence, 40 to 220 chars, varied vocabulary and typos in about 10%.
@@ -295,7 +295,7 @@ hand into the UI or docs.
   Cell fill = 5-step scale by count / max count.
 - `compare(reports)`: byQuestion ranking; topQuestionMix; reach.byQuestion = count of the most common label
   inside the top question; reach.byMisconception = count of the top teach-first item; sentence template:
-  "Grouping by question says start with {Q}. But one explanation of '{name}' reaches {n} students across
+  "Grouping by question says start with {Q}. But one explanation of '{name}' has {n} supporting reports across
   {questions}, versus {m} for the most common idea inside {Q}." If both agree: "Both views agree: start with…".
 
 ## 9. Visual direction ("marked-up answer sheet")
@@ -328,7 +328,7 @@ text (no colour-only meaning). Mobile: `/submit` is single-column at 375px; TA p
 |---|---|---|
 | Innovation & originality (25) | Grouping by misconception across questions; compare view proves a different first explanation; abstain by default | `/ta/compare`, video 0:40 |
 | Technical implementation (25) | End-to-end typed tRPC v11 contract, deterministic engine with zod-validated output, unit tests, `npm run eval` | repo, `/ta/eval`, README "How it works" |
-| Real-world impact (20) | The TA's 10 minutes; one explanation reaching N students; works offline with zero setup | landing, `/ta`, video 0:00 |
+| Real-world impact (20) | The TA's 10 minutes; one explanation reaching N reports; works offline with zero setup | landing, `/ta`, video 0:00 |
 | AI integration & responsible use (15) | Verbatim evidence, abstention, TA corrections, no label returned by the form, basic redaction, measured results with misses, and live data disclosure | `/ta/m/[id]`, `/ta/review`, `/ta/eval`, Settings note |
 | UX & presentation (15) | Calm "answer sheet" look, readable heatmap, 30-second student flow on mobile, clear video | all screens, screenshots |
 
@@ -339,8 +339,8 @@ text (no colour-only meaning). Mobile: `/submit` is single-column at 375px; TA p
 | 0:00 | Landing | "Ten minutes before office hours, a TA has one question: what should I explain first? Today they sort complaints by homework question. That's the wrong axis." |
 | 0:15 | `/submit` on phone width | "Students tell us where they got stuck in one sentence. No name, no account. They don't get a label back." Submit one. |
 | 0:35 | `/ta` | "The TA sees misconceptions, not question numbers. Ranked, with the reason: fourteen reports across three questions." Hover heatmap. |
-| 0:55 | `/ta/compare` | "Grouping by question says start with Q4. But the biggest idea inside Q4 reaches six students. Explaining goal-test timing reaches fourteen, across Q2, Q4 and Q5." |
-| 1:25 | `/ta/m/goal-test-on-generation` | "Every assignment shows its evidence, quoted word for word, and a confidence." Rename the misconception; confirm one report. |
+| 0:55 | `/ta/compare` | "Grouping by question says start with Q4. But the biggest idea inside Q4 has seven supporting reports across all questions. Explaining goal-test timing has fourteen supporting reports, across Q2, Q4 and Q5." |
+| 1:25 | `/ta/m/goal-test-on-generation` | "Every assignment shows its evidence, quoted word for word, and heuristic match support." Rename the misconception; confirm one report. |
 | 1:50 | `/ta/review` | "When it isn't sure, it abstains. This one mixes two ideas, so a human decides." Assign with one click; count updates. (If exemplars shipped: submit a paraphrase, it lands correctly.) |
 | 2:15 | `/ta/eval` | "We measured it on 20 synthetic examples. See every miss. The synonym list reflects vocabulary in the test set." Read the numbers on screen. |
 | 2:40 | `/ta/settings` | "Sample mode runs offline. If you opt into live mode, the demo server sends your key and redacted reports to the provider on a rerun." |
@@ -377,3 +377,18 @@ text (no colour-only meaning). Mobile: `/submit` is single-column at 375px; TA p
 - [ ] Devpost fields: name, tagline, problem/solution, AI implementation, built with, screenshots, repo, video
 - [ ] Every data screen labelled "Synthetic demo data"; no real student data or course materials anywhere
 - [ ] No secrets, no `.env`, no AI co-author trailers in git history
+
+## Revision: fair cohorts and teaching briefs (2026-11-21)
+
+Select the by-question baseline concept using the busiest question and its most common non-abstain label.
+Measure that selected concept across the full current report cohort, matching the misconception view's
+measurement scope. The seed example is 7 versus 14 reports; counts do not identify unique students.
+
+The dashboard provides a selection of one or two existing concepts and exports their static teaching hints,
+current report evidence, provisional/TA-checked counts and remaining review count. Recompute from current
+assignments and display names after corrections, renames and reset. Do not generate teaching advice.
+
+Keep `confidence` internally for compatibility, but label the visible signal “match support”; it is not a
+calibrated probability. Evaluation adds issued-label precision over every non-abstain prediction, including
+ambiguous false positives, separate from clear-gold conditional accuracy. Zero denominators return no
+available precision. Authored challenge cases do not establish independent validation or classroom impact.
