@@ -13,3 +13,19 @@ Draft for the owner. Nothing here has been submitted. Rules and overview checked
 | Video | Recommended, **about 2 to 4 minutes**. | Not recorded. Script below runs 3:00. |
 | Judging | The overview page lists Innovation & Creativity 30, Technical Execution & Complexity 30, Design & UX 20, Presentation & Impact 20. The rules page lists a different split (Innovation 25, Technical 25, Real-World Impact 20, AI Integration & Responsible Use 15, UX & Presentation 15). | The pages disagree. Write for both: originality, solid tech, responsible AI, a clear video. |
 | Best Beginner Hack ($500) | Only for projects built entirely by first-time hackathon participants. | Owner decides honestly whether this applies. |
+
+## Video script (target 3:00)
+
+1440×900; show `/submit` at phone width (390 px) in device mode. Use only the bundled synthetic reports and fictional text. Every number on screen comes from the app on the day you film.
+
+| Time | Screen | Voice-over |
+| --- | --- | --- |
+| 0:00–0:20 | `/ta/compare`: by question, the first explanation reaches 6; by misconception, 14. | "Grouping office-hours questions by homework number says start with Q4. But the biggest idea in Q4 reaches six students. One explanation of 'A-star stops when the goal is generated' reaches fourteen, across three questions." |
+| 0:20–0:35 | Landing page. | "Ten minutes before office hours, a TA has one question: what should I explain first? Office Hours Heatmap answers it." |
+| 0:35–0:55 | `/submit` at phone width: pick a question, type one fictional sentence, submit. | "Students say where they got stuck in one sentence. No name, no account, and they don't get a label back." |
+| 0:55–1:20 | `/ta`: teach-first list with reason lines; hover the heatmap. | "The TA sees misconceptions, not question numbers, ranked by how many students one explanation reaches, next to a misconception-by-question heatmap." |
+| 1:20–1:45 | `/ta/m/goal-test-on-generation`: underlined verbatim evidence, confidence, "What to say". Rename the misconception; confirm one report. | "Every assignment shows its evidence, quoted word for word. If it isn't a real quote from the student, it can't reach the TA. Corrections are one click and logged." |
+| 1:45–2:10 | `/ta/review`: an abstained report that mixes two ideas. Assign it; the count updates. | "When it isn't sure, it abstains. This one mixes two ideas, so a human decides." |
+| 2:10–2:35 | `/ta/eval`: metrics table and the misses. | "We measured it on 20 held-out synthetic reports: 15 of 15 right when it answered, 4 abstentions, 2 misses, all shown here. A by-question baseline agrees 30% of the time." |
+| 2:35–2:50 | `/ta/settings`. | "Sample mode runs offline with no setup. If you add your own model, reports are redacted before they're sent, and the same validator checks its answers." |
+| 2:50–3:00 | `/ta`. Title card and repo URL. | "Office Hours Heatmap: explain the right thing first." |
