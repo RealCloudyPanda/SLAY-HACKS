@@ -30,7 +30,7 @@ export function compare(reports: Labelled[]): CompareResult {
     topQuestion,
     topQuestionMix,
     byMisconception,
-    reach: { byQuestion: topIdea?.count ?? 0, byMisconception: first?.count ?? 0 },
+    reach: { byQuestion: topIdea ? reports.filter((r) => r.label === topIdea.label).length : 0, byMisconception: first?.count ?? 0 },
     topQuestionIdea: (topIdea?.label as MisconceptionId) ?? null,
     agree: !!topIdea && !!first && topIdea.label === first.id,
   };
@@ -41,6 +41,6 @@ export function compareSentence(c: CompareResult, nameOf: (id: MisconceptionId) 
   const first = c.byMisconception[0];
   if (!c.topQuestion || !first || first.count === 0) return "No reports yet, so there is nothing to compare.";
   const q = questionLabel(c.topQuestion);
-  if (c.agree) return `Both views agree: start with '${nameOf(first.id)}', which reaches ${first.count} students.`;
-  return `Grouping by question says start with ${q}. But one explanation of '${nameOf(first.id)}' reaches ${first.count} students across ${joinQuestions(first.questions)}, versus ${c.reach.byQuestion} for the most common idea inside ${q}.`;
+  if (c.agree) return `Both views agree: start with '${nameOf(first.id)}', which reaches ${first.count} reports.`;
+  return `Grouping by question says start with ${q}. But one explanation of '${nameOf(first.id)}' reaches ${first.count} reports across ${joinQuestions(first.questions)}, versus ${c.reach.byQuestion} across all reports for '${nameOf(c.topQuestionIdea!)}', the idea selected inside ${q}.`;
 }
