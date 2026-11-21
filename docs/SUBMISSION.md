@@ -26,7 +26,7 @@ Draft for the owner. Nothing here has been submitted. Rules and overview checked
 | 0:55–1:20 | `/ta`: teach-first list with reason lines; hover the heatmap. | "The TA sees misconceptions, not question numbers, ranked by how many reports support one explanation, next to a misconception-by-question heatmap." |
 | 1:20–1:45 | `/ta/m/goal-test-on-generation`: underlined verbatim evidence, match support, "What to say". Rename the misconception; confirm one report. | "Every assignment shows its evidence, quoted word for word. If it isn't a real quote from the student, it can't reach the TA. Corrections are one click and logged." |
 | 1:45–2:10 | `/ta/review`: an abstained report that mixes two ideas. Assign it; the count updates. | "When it isn't sure, it abstains. This one mixes two ideas, so a human decides." |
-| 2:10–2:35 | `/ta/eval`: metrics table and the misses. | "We measured it on 20 held-out synthetic reports: 15 of 15 right when it answered, 4 abstentions, 2 misses, all shown here. A by-question baseline agrees 30% of the time." |
+| 2:10–2:35 | `/ta/eval`: metrics table and the misses. | "On 20 authored synthetic challenges, 15 of 16 issued labels match the gold label. The clear-gold conditional result is 15 of 15. There are four abstentions and two misses, all shown here. This is not independent validation." |
 | 2:35–2:50 | `/ta/settings`. | "Sample mode runs offline with no setup. If you add your own model, reports are redacted before they're sent, and the same validator checks its answers." |
 | 2:50–3:00 | `/ta`. Title card and repo URL. | "Office Hours Heatmap: explain the right thing first." |
 
@@ -53,7 +53,7 @@ Q4 has the most complaints (17), yet its most common idea is shared by 6 reports
 - **Cluster detail:** every report with the evidence quoted word for word, heuristic match support, and a teaching hint.
 - **Review queue:** vague or mixed reports are not guessed; a TA assigns them with one click.
 - **Compare view:** grouping by question vs by misconception, side by side.
-- **Evaluation page:** measured results on a held-out set, with every miss.
+- **Evaluation page:** measured results on an authored synthetic challenge set, with every miss; not independent validation.
 
 ## AI implementation
 The default **Sample engine** is deterministic and offline: synonym normalisation, weighted cue patterns and
@@ -67,9 +67,11 @@ Synthetic demo data only, basic redaction before storage, no label shown to stud
 that are logged, abstention by default when unsure, and a measured evaluation that shows its misses. The live
 engine has only been tested with a mocked provider.
 
-## Measured results (`npm run eval`, 20 held-out synthetic reports, run 2026-11-21)
-Overall agreement 90% (18/20) · accuracy when answered 100% (15/15) · abstain rate 20% (4/20) ·
-ambiguous reports caught 75% (3/4) · naive by-question baseline 30%. A small set: one item is 5 points.
+## Measured results (`npm run eval`, 20 authored synthetic challenges, run 2026-11-21)
+Overall agreement 90% (18/20) · issued-label precision 93.75% (15/16) · clear-gold conditional accuracy
+100% (15/15) · abstain rate 20% (4/20) · ambiguous reports caught 75% (3/4) · naive by-question baseline
+30%. The conditional denominator excludes ambiguous gold cases. The same author wrote the cases and
+classifier; this is not independent validation. A small set: one item is 5 points.
 
 ## How I built it
 Next.js 16 (App Router) serving UI and API in one process, tRPC v11 with TanStack Query for one typed
