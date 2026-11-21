@@ -1,5 +1,5 @@
 import { beforeEach, expect, it } from 'vitest';
-import { teachingBrief } from '@/domain/brief';
+import { briefMarkdown, teachingBrief } from '@/domain/brief';
 import { state, store } from '@/store/memory';
 const id = 'goal-test-on-generation' as const;
 const brief = () => teachingBrief({ reports: state().reports, names: state().misconceptions }, [id]);
@@ -25,4 +25,17 @@ it('deduplicates selections and caps briefs at two concepts', () => {
   const input = { reports: state().reports, names: state().misconceptions };
   expect(teachingBrief(input, [id, id]).concepts).toHaveLength(1);
   expect(teachingBrief(input, state().misconceptions.map((m) => m.id)).concepts).toHaveLength(2);
+});
+
+it('escapes Markdown metacharacters and includes source status and remaining review', () => {
+  const item = brief().concepts[0];
+  item.name = 'Heading [unsafe](target) <script>'; 
+  item.evidence = [{ id: 'one', questionId: 'Q2', text: 'full report', excerpt: 'a *claim*\nnext line', status: 'provisional' }];
+  const md = briefMarkdown([item], 4, 60);
+  expect(md).toContain('60 reports · 4 waiting for review');
+  expect(md).toContain('What to say:');
+  expect(md).toContain('Q2 · one · provisional');
+  expect(md).toContain('a \\*claim\\* next line');
+  expect(md).not.toContain('<script>');
+  expect(md).not.toContain('[unsafe](target)');
 });
