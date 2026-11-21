@@ -8,7 +8,6 @@ const handler = (req: Request) =>
     req,
     router: appRouter,
     createContext: createTRPCContext,
-    // Deliberately no onError logging of inputs: live-engine calls can carry an API key (ADR 0004).
   });
 
 export { handler as GET, handler as POST };

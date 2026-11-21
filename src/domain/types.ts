@@ -58,7 +58,7 @@ export interface Correction {
   newName?: string;
 }
 
-/** A labelled synthetic item (seed or held-out). `gold` is never shown in the UI. */
+
 export interface LabelledItem {
   id: string;
   questionId: QuestionId;

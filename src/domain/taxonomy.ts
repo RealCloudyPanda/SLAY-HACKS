@@ -52,7 +52,7 @@ export function taxonomyEntry(id: MisconceptionId): TaxonomyEntry {
   return e;
 }
 
-/** Fresh Misconception records with display name = default name. */
+
 export function defaultMisconceptions(): Misconception[] {
   return TAXONOMY.map((t) => ({ ...t, name: t.defaultName }));
 }

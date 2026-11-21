@@ -1,4 +1,4 @@
-// npm run eval: Sample engine on the 20-item held-out set. Prints every SPEC 7 metric, baseline and misses.
+
 import { execSync } from "node:child_process";
 import { HELDOUT } from "../src/data/heldout";
 import { cleanSampleEngine } from "../src/engine/sample/classify";

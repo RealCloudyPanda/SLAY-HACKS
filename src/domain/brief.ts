@@ -3,7 +3,7 @@ import { taxonomyEntry } from './taxonomy';
 import type { MisconceptionId, StuckReport } from './types';
 
 export interface BriefInput { reports: StuckReport[]; names: { id: MisconceptionId; name: string }[] }
-/** Rebuild from current assignments so moves, rejection, rename and reset cannot leave stale evidence. */
+
 export function teachingBrief(input: BriefInput, selected: MisconceptionId[]) {
   const labelled: Labelled[] = input.reports.map((r) => ({ questionId: r.questionId, label: r.assignment.label, source: r.assignment.source }));
   const ranked = teachFirst(labelled);

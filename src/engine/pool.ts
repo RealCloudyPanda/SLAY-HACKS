@@ -1,4 +1,4 @@
-/** Run tasks with at most `limit` in flight and keep results in input order. */
+
 export async function pool<T, R>(items: readonly T[], limit: number, fn: (item: T) => R | Promise<R>): Promise<R[]> {
   const results = new Array<R>(items.length);
   let next = 0;

@@ -52,7 +52,7 @@ export function computeMetrics(preds: Prediction[]): Metrics {
 
 export const LABELS: Label[] = [...MISCONCEPTION_IDS, "abstain"];
 
-/** confusion[gold][predicted] = count. */
+
 export function confusion(preds: Prediction[]): Record<Label, Record<Label, number>> {
   const m = Object.fromEntries(LABELS.map((g) => [g, Object.fromEntries(LABELS.map((p) => [p, 0]))])) as Record<
     Label,
@@ -62,7 +62,7 @@ export function confusion(preds: Prediction[]): Record<Label, Record<Label, numb
   return m;
 }
 
-/** Naive by-question baseline: predict the seed set's most common gold misconception for that question. */
+
 export function byQuestionBaseline(seed: readonly LabelledItem[]): Record<QuestionId, Label> {
   const out = {} as Record<QuestionId, Label>;
   for (const q of QUESTION_IDS) {

@@ -5,11 +5,7 @@ export interface Cue {
   weight: number;
 }
 
-/**
- * Weighted cue patterns over NORMALISED text (see normalize.ts: gcost, hcost, fcost, closedset, openlist).
- * Negation is not a guard: students describe the belief they held ("isn't that the same thing").
- * Tuned on the seed set only.
- */
+
 export const CUES: Record<MisconceptionId, Cue[]> = {
   "goal-test-on-generation": [
     { pattern: /goal.{0,40}\b(generat|added|add|push|pushed|showed up|appear|got generated|in openlist|on openlist|onto openlist)/, weight: 1.2 },
@@ -59,7 +55,7 @@ export const CUES: Record<MisconceptionId, Cue[]> = {
   ],
 };
 
-/** Words describing each misconception, added to its TF-IDF profile document. */
+
 export const PROFILE_TERMS: Record<MisconceptionId, string> = {
   "goal-test-on-generation": "goal generated added openlist pushed stop return soon found goal test pop expanded generation",
   "admissible-means-consistent": "admissible consistent same overestimate never overestimates consistency interchangeable edges",

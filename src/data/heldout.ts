@@ -1,9 +1,6 @@
 import type { LabelledItem, Label, QuestionId } from "@/domain/types";
 
-/**
- * 20 held-out synthetic reports, frozen before any engine tuning.
- * Never read while tuning cues or thresholds; only the eval imports this file.
- */
+
 const raw: [QuestionId, Label, string][] = [
   ["Q2", "goal-test-on-generation", "the moment the target landed on the fringe I called it done, but the key pops two more nodes first"],
   ["Q4", "goal-test-on-generation", "pop vs push confuses me, I ended the run on push of the goal and got a longer route"],

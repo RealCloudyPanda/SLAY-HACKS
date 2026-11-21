@@ -6,7 +6,7 @@ export interface HomeworkQuestion {
   prompt: string;
 }
 
-/** Synthetic homework, written for this project (Unit 3: Heuristic search). */
+
 export const UNIT_NAME = "Unit 3: Heuristic search";
 
 export const QUESTIONS: readonly HomeworkQuestion[] = [

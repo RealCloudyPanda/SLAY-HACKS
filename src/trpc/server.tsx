@@ -9,7 +9,7 @@ import { appRouter } from "./routers/_app";
 
 export const getQueryClient = cache(makeQueryClient);
 
-/** In-process proxy for server components: no HTTP round trip. */
+
 export const trpc = createTRPCOptionsProxy({
   ctx: createTRPCContext,
   router: appRouter,

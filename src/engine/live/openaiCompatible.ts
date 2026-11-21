@@ -55,7 +55,7 @@ const SYSTEM = [
 
 type FetchFn = typeof fetch;
 
-/** Classify one report with any OpenAI-compatible Chat Completions endpoint. Errors become abstain; the key never appears in a reason. */
+
 export async function classifyLive(
   text: string,
   questionId: QuestionId,

@@ -3,7 +3,7 @@ import { classifyLive, LiveConfigSchema, MAX_CONCURRENT } from "@/engine/live/op
 import { demoEngine, store } from "@/store/memory";
 import { baseProcedure, createTRPCRouter } from "../init";
 
-// Inputs here can carry an API key: never log them (ADR 0004).
+
 export const engineRouter = createTRPCRouter({
   rerun: baseProcedure
     .input(z.discriminatedUnion("engine", [z.object({ engine: z.literal("sample") }), LiveConfigSchema.extend({ engine: z.literal("live") })]))

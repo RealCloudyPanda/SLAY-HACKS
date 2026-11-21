@@ -1,4 +1,4 @@
-/** Synonym groups → canonical tokens (SPEC 6.2 step 1). Order matters: longer phrases first. */
+
 const SYNONYMS: [RegExp, string][] = [
   [/\bg\s*\(\s*n\s*\)|\bg of n\b|\bpath cost\b|\bcost[\s-]so[\s-]far\b|\bdistance already travell?ed\b|\bactual path cost\b/g, " gcost "],
   [/\bh\s*\(\s*n\s*\)|\bh of n\b|\bheuristic values?\b|\bestimates?\b/g, " hcost "],
@@ -13,7 +13,7 @@ export const STOPWORDS = new Set(
   ),
 );
 
-/** Lowercase, collapse synonyms to canonical tokens, strip punctuation. */
+
 export function normalize(text: string): string {
   let s = ` ${text.toLowerCase()} `;
   s = s.replace(/[’‘]/g, "'");

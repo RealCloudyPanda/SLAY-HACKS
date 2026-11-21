@@ -2,7 +2,7 @@
 
 import { useLiveConfig } from "@/lib/liveConfig";
 
-/** Shows the most recent batch engine. New submissions use Sample. */
+
 export function EngineBadge({ serverEngine }: { serverEngine?: { kind: "sample" | "live"; model?: string } }) {
   const { isLiveReady, config } = useLiveConfig();
   const live = serverEngine?.kind === "live";

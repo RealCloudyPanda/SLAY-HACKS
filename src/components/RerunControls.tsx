@@ -5,7 +5,7 @@ import { useLiveConfig } from "@/lib/liveConfig";
 import { useInvalidateAll } from "@/lib/useInvalidate";
 import { useTRPC } from "@/trpc/client";
 
-/** "Re-run with live model" appears only when a live model is configured in this browser. */
+
 export function RerunControls() {
   const trpc = useTRPC();
   const invalidate = useInvalidateAll();

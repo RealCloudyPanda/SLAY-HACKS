@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { SEED } from "@/data/seed";
 import { cleanSampleEngine } from "@/engine/sample/classify";
 
-// Hand-written for this test; not taken from the seed or held-out sets.
+
 const cases: [string, string][] = [
   ["the goal node got added to the open list so I stopped right there", "goal-test-on-generation"],
   ["I ended the search when I generated the goal instead of waiting to expand it", "goal-test-on-generation"],

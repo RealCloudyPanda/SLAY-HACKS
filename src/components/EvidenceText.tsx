@@ -1,4 +1,4 @@
-/** The full sentence with the engine's verbatim evidence underlined in pencil. */
+
 export function EvidenceText({ text, excerpt }: { text: string; excerpt: string }) {
   const i = excerpt ? text.indexOf(excerpt) : -1;
   if (i < 0) return <p className="report-text">{text}</p>;

@@ -1,7 +1,7 @@
 import { questionLabel } from "./questions";
 import { MISCONCEPTION_IDS, QUESTION_IDS, type AssignmentSource, type Label, type MisconceptionId, type QuestionId } from "./types";
 
-/** Minimal shape the pure ranking functions need. */
+
 export interface Labelled {
   questionId: QuestionId;
   label: Label;
@@ -22,7 +22,7 @@ export function joinQuestions(qs: QuestionId[]): string {
   return `${l.slice(0, -1).join(", ")} and ${l[l.length - 1]}`;
 }
 
-/** SPEC 8: count desc, distinct questions desc, TA-confirmed/moved desc, id asc. Includes zero rows at the end. */
+
 export function teachFirst(reports: Labelled[]): TeachFirstItem[] {
   return MISCONCEPTION_IDS.map((id) => {
     const mine = reports.filter((r) => r.label === id);

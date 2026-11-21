@@ -9,7 +9,7 @@ export const SubmitInput = z.object({
 });
 
 export const reportRouter = createTRPCRouter({
-  /** Returns no label: students never see how their report was classified. */
+
   submit: baseProcedure.input(SubmitInput).mutation(({ input }) => {
     store.submit(input.questionId, input.text);
     return { ok: true as const };

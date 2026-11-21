@@ -50,7 +50,7 @@ function fresh(): State {
   };
 }
 
-/** Lazily seeded singleton. In-memory and per server instance (see README Known limitations). */
+
 export function state(): State {
   if (!g.__ohh) g.__ohh = fresh();
   return g.__ohh;
@@ -61,7 +61,7 @@ const now = () => new Date().toISOString();
 
 let engineCache: { key: string; engine: SampleEngine } | undefined;
 let latestRerun = 0;
-/** Sample engine including TA exemplars (store-only; eval uses a clean engine). */
+
 export function demoEngine(): SampleEngine {
   const key = JSON.stringify(state().exemplars);
   if (!engineCache || engineCache.key !== key) engineCache = { key, engine: createSampleEngine(state().exemplars) };
@@ -140,7 +140,7 @@ export const store = {
     return m;
   },
 
-  /** Re-classify every report not touched by a TA. */
+
   async rerun(
     classify: (report: Pick<StuckReport, "text" | "questionId">) => EngineResult | Promise<EngineResult>,
     engine: State["engine"],

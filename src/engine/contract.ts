@@ -18,17 +18,14 @@ export const EngineResultSchema = z.object({
 });
 export type EngineResult = z.infer<typeof EngineResultSchema>;
 
-/** Minimum confidence to accept a non-abstain result, per engine. */
+
 export const CONFIDENCE_FLOOR: Record<EngineKind, number> = { sample: 0.05, live: 0.5 };
 
 export function abstain(engine: EngineKind, reason: string, candidates: EngineResult["candidates"] = []): EngineResult {
   return { misconceptionId: "abstain", evidenceExcerpt: "", confidence: 0, candidates, engine, reason };
 }
 
-/**
- * The single gate every engine result passes through (ADR 0003).
- * Anything malformed, unknown, unquoted or under-confident becomes an abstain with a reason.
- */
+
 export function validateResult(text: string, raw: unknown, engine: EngineKind): EngineResult {
   const parsed = EngineResultSchema.safeParse(raw);
   if (!parsed.success) {

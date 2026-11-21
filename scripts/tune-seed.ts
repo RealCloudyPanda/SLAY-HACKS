@@ -1,4 +1,4 @@
-// Tuning helper: prints Sample-engine agreement on the SEED set only (never the held-out set).
+
 import { SEED } from "../src/data/seed";
 import { cleanSampleEngine } from "../src/engine/sample/classify";
 

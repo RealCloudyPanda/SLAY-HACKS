@@ -1,11 +1,8 @@
 import type { LabelledItem, Label, QuestionId } from "@/domain/types";
 
-/**
- * 60 synthetic stuck reports. Written for this project; no real students, courses or exam text.
- * `gold` labels drive tests and the compare check only. The UI shows engine labels.
- */
+
 const raw: [QuestionId, Label, string][] = [
-  // goal-test-on-generation (14): Q2 x5, Q4 x4, Q5 x5
+
   ["Q2", "goal-test-on-generation", "I returned the path as soon as the goal showed up in the frontier, why is that wrong"],
   ["Q2", "goal-test-on-generation", "my trace stops when G gets pushed with f=9 but the answer key keeps going"],
   ["Q2", "goal-test-on-generation", "I stopped the search the moment the goal was added to the open list, isn't finding it enough?"],
@@ -21,7 +18,7 @@ const raw: [QuestionId, Label, string][] = [
   ["Q5", "goal-test-on-generation", "I said the path is whatever we have when the goal gets added to the open list"],
   ["Q5", "goal-test-on-generation", "not sure why you have to wait to pop the goal, I stopped when it was generated"],
 
-  // admissible-means-consistent (11): Q1 x4, Q3 x5, Q4 x2
+
   ["Q1", "admissible-means-consistent", "I said Manhattan is consistent because it's admissible, isn't that the same thing"],
   ["Q1", "admissible-means-consistent", "I thought admissible and consistent were two words for never overestimating"],
   ["Q1", "admissible-means-consistent", "straight-line distance is admissible so I wrote it's consistent too, got marked wrong"],
@@ -34,7 +31,7 @@ const raw: [QuestionId, Label, string][] = [
   ["Q4", "admissible-means-consistent", "the question says h is admissible but not consistent and I don't see how that's possible"],
   ["Q4", "admissible-means-consistent", "if h never overestimates how can it fail to be consistent, I thought admissible means consistent"],
 
-  // any-heuristic-optimal (8): Q1 x1, Q2 x1, Q5 x6
+
   ["Q1", "any-heuristic-optimal", "I said it doesn't matter which heuristic we pick since A* always finds the optimal path"],
   ["Q2", "any-heuristic-optimal", "I assumed A* gives the shortest path no matter what h values are in the table"],
   ["Q5", "any-heuristic-optimal", "for Q5 I assumed weighted A* still gives the shortest path since it's still A*"],
@@ -44,7 +41,7 @@ const raw: [QuestionId, Label, string][] = [
   ["Q5", "any-heuristic-optimal", "my answer was that any A* variant returns the optimal path, the key says no"],
   ["Q5", "any-heuristic-optimal", "isnt A* always optimal? thats the whole point of A* I thought"],
 
-  // g-h-swapped (8): Q2 x4, Q3 x2, Q4 x2
+
   ["Q2", "g-h-swapped", "I added the heuristic of the parent instead of the path cost so my f values are all off"],
   ["Q2", "g-h-swapped", "I mixed up g and h, I used h as the cost so far and g as the guess"],
   ["Q2", "g-h-swapped", "my f values are wrong because I summed the two heuristic values instead of g plus h"],
@@ -54,7 +51,7 @@ const raw: [QuestionId, Label, string][] = [
   ["Q4", "g-h-swapped", "for Q4 I computed f as h plus h of the parent, I think I don't get what g is"],
   ["Q4", "g-h-swapped", "I put the path cost in the h column and the estimate in the g column by mistake"],
 
-  // closed-never-reopened (7): Q2 x1, Q4 x6
+
   ["Q2", "closed-never-reopened", "once B is in the closed set I skipped it, I didn't know you'd ever look at it again"],
   ["Q4", "closed-never-reopened", "I thought once a node is closed its cost is final, so I ignored the cheaper path to D"],
   ["Q4", "closed-never-reopened", "why would you ever reopen a closed node? I never touch closed nodes again"],
@@ -63,14 +60,14 @@ const raw: [QuestionId, Label, string][] = [
   ["Q4", "closed-never-reopened", "my graph search never revisits closed nodes so I got the suboptimal path, I thought that was the rule"],
   ["Q4", "closed-never-reopened", "the key reopens node C after it was closed, I didnt know that was allowed"],
 
-  // bigger-h-always-better (5): Q1 x2, Q5 x3
+
   ["Q1", "bigger-h-always-better", "I picked the heuristic with the bigger numbers because bigger means more informed right"],
   ["Q1", "bigger-h-always-better", "I said straight-line times 3 is best because a larger heuristic is always better"],
   ["Q5", "bigger-h-always-better", "doubling h makes it bigger so it should be better, more informed heuristics are always better"],
   ["Q5", "bigger-h-always-better", "I thought a larger h always helps since it expands fewer nodes, so 2h is strictly better"],
   ["Q5", "bigger-h-always-better", "bigger heuristic values mean a better heuristic, even if it overestimates a bit"],
 
-  // abstain / ambiguous (7): Q1 x1, Q3 x1, Q4 x3, NS x2
+
   ["Q1", "abstain", "honestly the whole grid thing confused me, I didn't know where to start"],
   ["Q3", "abstain", "I got lost in the table, too many numbers to keep track of"],
   ["Q4", "abstain", "honestly Q4 just lost me"],

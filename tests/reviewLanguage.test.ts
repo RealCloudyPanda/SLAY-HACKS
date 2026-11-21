@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { cleanSampleEngine } from '@/engine/sample/classify';
 
-// Authored adversarial regressions discovered during implementation. These are
-// development cases, not an independent evaluation or a representative sample.
+
+
 export const REVIEW_CASES = [
   'A bigger monitor is always better so I chose the largest one',
   'Once the ticket is closed I never reopen it or revisit the final decision',

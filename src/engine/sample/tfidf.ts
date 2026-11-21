@@ -36,7 +36,7 @@ export class TfIdf {
     return v;
   }
 
-  /** Cosine similarity of `text` to each document, in document order. */
+
   similarities(text: string): number[] {
     const q = this.vector(text);
     return this.docVecs.map((d) => cosine(q, d));

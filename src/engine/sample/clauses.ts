@@ -6,7 +6,7 @@ export interface Clause {
 
 const SPLIT = /[.;,!?]+|\b(?:but|because|so|and then|since)\b/gi;
 
-/** Split the ORIGINAL sentence into clauses; every clause is an exact substring (offsets into the original). */
+
 export function splitClauses(original: string): Clause[] {
   const out: Clause[] = [];
   let last = 0;

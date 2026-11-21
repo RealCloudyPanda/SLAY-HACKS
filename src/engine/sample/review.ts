@@ -1,7 +1,7 @@
 import type { MisconceptionId } from '@/domain/types';
 import { normalize } from './normalize';
 
-/** Conservative review gates, not a parser or a proof that a belief is wrong. */
+
 const CONTEXT: Record<MisconceptionId, RegExp> = {
   'goal-test-on-generation': /\b(goal|target|openlist|search|node|trace)\b/,
   'admissible-means-consistent': /\badmissib\w*|\bheuristic\w*|\bhcost\b|\bh\b|\bmanhattan\b|\bedges?\b/,
@@ -11,8 +11,8 @@ const CONTEXT: Record<MisconceptionId, RegExp> = {
   'bigger-h-always-better': /\b(heuristic\w*|hcost|h|2h)\b/,
 };
 
-// These phrases explicitly qualify a claim or describe a correction. A bag of cues
-// cannot determine whether the report still expresses the old belief: send to TA.
+
+
 const QUALIFIED = [
   /\bnot\s+(?:always|necessarily|guaranteed|the same|equivalent|when|the other way)\b/,
   /\b(?:does not|doesn't|doesnt|cannot|can't)\s+(?:imply|mean|guarantee)\b/,

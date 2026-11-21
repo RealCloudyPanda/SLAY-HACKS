@@ -25,7 +25,7 @@ function read(): LiveConfig {
   return value;
 }
 
-/** Live config lives only in this browser's localStorage (ADR 0004). */
+
 export function useLiveConfig() {
   const config = useSyncExternalStore(
     (cb) => {

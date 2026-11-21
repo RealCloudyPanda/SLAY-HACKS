@@ -7,15 +7,15 @@ import { normalize, wordCount } from "./normalize";
 import { TfIdf } from "./tfidf";
 import { reviewReason } from "./review";
 
-/** Thresholds tuned on the seed set only; shown on /ta/eval. */
+
 export const TAU = 0.3;
 export const DELTA = 0.12;
 export const MIN_WORDS = 5;
-/** If the runner-up is this strong on its own, the report mixes two ideas: abstain. */
+
 export const MIX = 0.45;
 export const W_CUE = 0.65;
 export const W_SIM = 0.35;
-/** Weight of the closest TA exemplar (nearest-neighbour vote). Only active when a TA has corrected something. */
+
 export const W_EX = 0.6;
 
 export type Exemplars = Partial<Record<MisconceptionId, string[]>>;
@@ -33,7 +33,7 @@ export function createSampleEngine(exemplars: Exemplars = {}): SampleEngine {
   const exDocs = ids.flatMap((id, idx) => (exemplars[id] ?? []).map((text) => ({ idx, text })));
   const tfidf = new TfIdf([...profiles, ...exDocs.map((e) => e.text)]);
 
-  /** Per misconception: [profile similarity, best exemplar similarity]. */
+
   const sims = (text: string) => {
     const all = tfidf.similarities(text);
     const ex = ids.map(() => 0);
@@ -90,5 +90,5 @@ export function createSampleEngine(exemplars: Exemplars = {}): SampleEngine {
 
 const round = (n: number, dp: number) => Math.round(n * 10 ** dp) / 10 ** dp;
 
-/** Clean engine with no TA exemplars: used by eval so held-out numbers never depend on demo state. */
+
 export const cleanSampleEngine = createSampleEngine();

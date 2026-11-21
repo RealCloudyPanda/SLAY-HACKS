@@ -4,7 +4,7 @@ import { QUESTION_IDS, type MisconceptionId, type QuestionId } from "./types";
 export interface HeatCell {
   questionId: QuestionId;
   count: number;
-  /** 0 = empty, 1..5 = heat step. */
+
   step: number;
 }
 export interface HeatRow {
@@ -18,7 +18,7 @@ export function heatStep(count: number, max: number): number {
   return Math.max(1, Math.min(5, Math.ceil((count / max) * 5)));
 }
 
-/** Rows in the given (teach-first) order, columns Q1..Q5, NS. */
+
 export function heatmap(reports: Labelled[], order: MisconceptionId[]): { rows: HeatRow[]; max: number } {
   const count = (id: MisconceptionId, q: QuestionId) => reports.filter((r) => r.label === id && r.questionId === q).length;
   const raw = order.map((id) => ({ id, counts: QUESTION_IDS.map((q) => count(id, q)) }));

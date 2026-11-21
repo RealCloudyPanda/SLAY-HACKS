@@ -7,7 +7,7 @@ import { useLiveConfig } from "@/lib/liveConfig";
 import { useTRPC } from "@/trpc/client";
 import { EvalView } from "./EvalView";
 
-/** Shown only when a live model is configured: evaluates it on the same held-out set. */
+
 export function EvalLiveButton() {
   const trpc = useTRPC();
   const { config, isLiveReady } = useLiveConfig();

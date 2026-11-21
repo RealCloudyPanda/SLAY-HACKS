@@ -36,7 +36,7 @@ export function compare(reports: Labelled[]): CompareResult {
   };
 }
 
-/** Template sentence (SPEC 8), never AI-generated. */
+
 export function compareSentence(c: CompareResult, nameOf: (id: MisconceptionId) => string): string {
   const first = c.byMisconception[0];
   if (!c.topQuestion || !first || first.count === 0) return "No reports yet, so there is nothing to compare.";
