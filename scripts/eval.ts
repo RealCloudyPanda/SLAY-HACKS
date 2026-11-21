@@ -15,10 +15,11 @@ const r = await runEval("sample", (it) => cleanSampleEngine.classify(it.text), H
 const m = r.metrics;
 const c = m.counts;
 console.log(`Office Hours Heatmap eval: engine=${r.engine} items=${r.size} commit=${commit} at=${r.ranAt}`);
-console.log(`Synthetic held-out set, ${r.size} items: small, indicative only.\n`);
+console.log(`Authored synthetic challenge set, ${r.size} items: not independent validation.\n`);
 console.table({
   "Overall agreement": { value: pct(m.overallAgreement), detail: `${c.correct}/${m.n}` },
-  "Accuracy when answered": { value: pct(m.accuracyWhenAnswered), detail: `${c.answeredCorrect}/${c.answered}` },
+  "Issued-label precision": { value: pct(m.issuedLabelPrecision), detail: `${c.issuedCorrect}/${c.issued}, includes ambiguous false positives` },
+  "Clear-gold conditional accuracy": { value: pct(m.accuracyWhenAnswered), detail: `${c.answeredCorrect}/${c.answered}` },
   Coverage: { value: pct(m.coverage), detail: `${c.answered}/${c.goldNonAbstain}` },
   "Abstain rate": { value: pct(m.abstainRate), detail: `${c.abstained}/${m.n}` },
   "Ambiguous caught": { value: pct(m.ambiguousCaught), detail: `${Math.round((m.ambiguousCaught ?? 0) * c.goldAbstain)}/${c.goldAbstain}` },
