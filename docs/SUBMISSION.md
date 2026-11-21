@@ -29,3 +29,11 @@ Draft for the owner. Nothing here has been submitted. Rules and overview checked
 | 2:10–2:35 | `/ta/eval`: metrics table and the misses. | "We measured it on 20 held-out synthetic reports: 15 of 15 right when it answered, 4 abstentions, 2 misses, all shown here. A by-question baseline agrees 30% of the time." |
 | 2:35–2:50 | `/ta/settings`. | "Sample mode runs offline with no setup. If you add your own model, reports are redacted before they're sent, and the same validator checks its answers." |
 | 2:50–3:00 | `/ta`. Title card and repo URL. | "Office Hours Heatmap: explain the right thing first." |
+
+## Devpost text
+
+**Project name:** Office Hours Heatmap
+
+**Elevator pitch** (≤200 chars):
+
+> Students say where they got stuck in one sentence. TAs see which misconception to explain first, with the students' own words as evidence, and it abstains instead of guessing.
