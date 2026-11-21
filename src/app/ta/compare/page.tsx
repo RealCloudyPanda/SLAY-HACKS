@@ -22,7 +22,7 @@ export default function ComparePage() {
       <div className="stack" style={{ gap: 6 }}>
         <h1>Question number or misconception?</h1>
         <p className="muted" style={{ maxWidth: "70ch" }}>
-          The same reports, grouped two ways. The number that matters: how many students your first explanation reaches.
+          The same reports, grouped two ways. The number that matters: how many reports support your first explanation. Reports are not unique students.
         </p>
       </div>
       <p className="conclusion">{c.sentence}</p>
@@ -33,7 +33,7 @@ export default function ComparePage() {
           <ReachStat
             n={c.reach.byQuestion}
             label={`First explanation reaches`}
-            detail={c.topQuestionIdeaName ? `students: the most common idea inside ${tq} is “${c.topQuestionIdeaName}”` : "students"}
+            detail={c.topQuestionIdeaName ? `reports across the entire cohort; selected inside the busiest question ${tq}: “${c.topQuestionIdeaName}”` : "reports"}
             win={c.reach.byQuestion > c.reach.byMisconception}
           />
           <div className="panel panel-body stack">
@@ -63,7 +63,7 @@ export default function ComparePage() {
           <ReachStat
             n={c.reach.byMisconception}
             label="First explanation reaches"
-            detail={first ? `students across ${joinQuestions(first.questions)}: “${first.name}”` : "students"}
+            detail={first ? `reports across ${joinQuestions(first.questions)}: “${first.name}”` : "reports"}
             win={c.reach.byMisconception >= c.reach.byQuestion}
           />
           <div className="panel">
@@ -82,7 +82,7 @@ export default function ComparePage() {
           </div>
         </section>
       </div>
-      <p className="note">Computed live from the current labels, including your corrections. The sentence above is a fixed template filled with these numbers, not AI-written.</p>
+      <p className="note">Choose the baseline concept from the busiest question, then count that concept across every report, exactly as for the tool choice. Computed live from current labels, including corrections. The sentence above is a fixed template filled with these numbers, not AI-written.</p>
     </div>
   );
 }
