@@ -24,7 +24,7 @@ Draft for the owner. Nothing here has been submitted. Rules and overview checked
 | 0:20–0:35 | Landing page. | "Ten minutes before office hours, a TA has one question: what should I explain first? Office Hours Heatmap answers it." |
 | 0:35–0:55 | `/submit` at phone width: pick a question, type one fictional sentence, submit. | "Students say where they got stuck in one sentence. No name, no account, and they don't get a label back." |
 | 0:55–1:20 | `/ta`: teach-first list with reason lines; hover the heatmap. | "The TA sees misconceptions, not question numbers, ranked by how many reports support one explanation, next to a misconception-by-question heatmap." |
-| 1:20–1:45 | `/ta/m/goal-test-on-generation`: underlined verbatim evidence, match support, "What to say". Rename the misconception; confirm one report. | "Every assignment shows its evidence, quoted word for word. If it isn't a real quote from the student, it can't reach the TA. Corrections are one click and logged." |
+| 1:20–1:45 | `/ta/m/goal-test-on-generation`: underlined verbatim evidence, match support, "What to say". Rename the misconception; confirm one report. | "Accepted engine assignments retain a word-for-word quote. A TA move may have no retained excerpt; the full report remains visible with its human status. Corrections are one click and logged." |
 | 1:45–2:10 | `/ta/review`: an abstained report that mixes two ideas. Assign it; the count updates. | "When it isn't sure, it abstains. This one mixes two ideas, so a human decides." |
 | 2:10–2:35 | `/ta/eval`: metrics table and the misses. | "On 20 authored synthetic challenges, 15 of 16 issued labels match the gold label. The clear-gold conditional result is 15 of 15. There are four abstentions and two misses, all shown here. This is not independent validation." |
 | 2:35–2:50 | `/ta/settings`. | "Sample mode runs offline with no setup. If you add your own model, reports are redacted before they're sent, and the same validator checks its answers." |
@@ -50,7 +50,7 @@ Q4 has the most complaints (17), yet its most common idea is shared by 6 reports
 ## What it does
 - **Student form:** pick a question, write one sentence, submit. No account, no name, no label returned.
 - **Teach-first list and heatmap:** misconceptions ranked by how many reports support one explanation.
-- **Cluster detail:** every report with the evidence quoted word for word, heuristic match support, and a teaching hint.
+- **Cluster detail:** full reports, retained verbatim engine excerpts when present, heuristic match support, human correction status and a teaching hint. TA moves without excerpts show the full report.
 - **Review queue:** vague or mixed reports are not guessed; a TA assigns them with one click.
 - **Compare view:** grouping by question vs by misconception, side by side.
 - **Evaluation page:** measured results on an authored synthetic challenge set, with every miss; not independent validation.

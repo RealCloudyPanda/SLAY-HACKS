@@ -340,7 +340,7 @@ text (no colour-only meaning). Mobile: `/submit` is single-column at 375px; TA p
 | 0:15 | `/submit` on phone width | "Students tell us where they got stuck in one sentence. No name, no account. They don't get a label back." Submit one. |
 | 0:35 | `/ta` | "The TA sees misconceptions, not question numbers. Ranked, with the reason: fourteen reports across three questions." Hover heatmap. |
 | 0:55 | `/ta/compare` | "Grouping by question says start with Q4. But the biggest idea inside Q4 has seven supporting reports across all questions. Explaining goal-test timing has fourteen supporting reports, across Q2, Q4 and Q5." |
-| 1:25 | `/ta/m/goal-test-on-generation` | "Every assignment shows its evidence, quoted word for word, and heuristic match support." Rename the misconception; confirm one report. |
+| 1:25 | `/ta/m/goal-test-on-generation` | "Accepted engine assignments retain verbatim excerpts and heuristic match support. Human moves can have no retained excerpt; read the full report and its human status." Rename the misconception; confirm one report. |
 | 1:50 | `/ta/review` | "When it isn't sure, it abstains. This one mixes two ideas, so a human decides." Assign with one click; count updates. (If exemplars shipped: submit a paraphrase, it lands correctly.) |
 | 2:15 | `/ta/eval` | "We measured it on 20 synthetic examples. See every miss. The synonym list reflects vocabulary in the test set." Read the numbers on screen. |
 | 2:40 | `/ta/settings` | "Sample mode runs offline. If you opt into live mode, the demo server sends your key and redacted reports to the provider on a rerun." |
