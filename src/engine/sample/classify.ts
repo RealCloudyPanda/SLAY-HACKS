@@ -5,6 +5,7 @@ import { splitClauses } from "./clauses";
 import { cueSum, PROFILE_TERMS, squash } from "./cues";
 import { normalize, wordCount } from "./normalize";
 import { TfIdf } from "./tfidf";
+import { reviewReason } from "./review";
 
 /** Thresholds tuned on the seed set only; shown on /ta/eval. */
 export const TAU = 0.3;
@@ -64,6 +65,9 @@ export function createSampleEngine(exemplars: Exemplars = {}): SampleEngine {
       return { ...base, misconceptionId: "abstain", reason: "Mentions two misconceptions at once" };
     if (top.score - second.score < DELTA)
       return { ...base, misconceptionId: "abstain", reason: "Two misconceptions scored almost the same" };
+
+    const needsReview = reviewReason(text, top.id);
+    if (needsReview) return { ...base, candidates: [], misconceptionId: "abstain", reason: needsReview };
 
     const confidence = round(Math.min(1, top.score) * Math.min(1, (top.score - second.score) / 0.3), 2);
     const idx = ids.indexOf(top.id);

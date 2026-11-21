@@ -75,3 +75,17 @@ not the frozen run above. This is an authored challenge set and is not independe
 Misses remain h01 (missed paraphrase, abstained) and h19 (ambiguous gold, issued closed-never-reopened).
 Unavailable denominators return null for precision, coverage and conditional accuracy. No evidence here
 establishes student learning gains. Keep the conditional 15/15 distinct from the all-issued 15/16.
+
+### Development challenge: correction language and off-topic cues (2026-11-21)
+
+Nine fresh authored probes initially received false misconception labels: a larger monitor, a closed
+ticket, consistent writing, and six correct/qualified A* statements. The model even quoted the correct
+“goal is popped” clause as evidence for stopping on generation. Conservative context and correction
+language gates now route these reports to TA review with an empty evidence excerpt. The regression
+suite includes these nine and three additional authored variants (12 total). These cases informed the
+fix, so their passing result is development evidence, not independent validation or generalization.
+
+The untouched 20-case challenge run remains 18/20 agreement, 15/16 issued-label precision, 15/16
+clear-gold coverage, with the same h01 and h19 failures. Gates deliberately favor review when they
+recognize qualified/corrected beliefs; unfamiliar wording can still defeat them, and genuine mixed
+reports may need human assignment. No human or external student testing is claimed.

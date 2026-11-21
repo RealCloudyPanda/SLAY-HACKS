@@ -22,13 +22,14 @@ export default function ReviewPage() {
       <div className="stack" style={{ gap: 6 }}>
         <h1>Review queue</h1>
         <p className="muted" style={{ maxWidth: "70ch" }}>
-          The engine abstains instead of guessing when a report is vague or mixes two ideas. A TA decides here; the engine&apos;s two
-          best guesses are hints, not answers.
+          Reports wait here when they are vague, mix ideas, lack A* context, or may describe a correction rather than a misconception.
+          Read the full report before assigning. A correct or off-topic statement may fit none of these six labels; keep it unassigned.
+          Any engine guesses shown are hints, not answers.
         </p>
       </div>
       {reports.length === 0 ? (
         <div className="panel">
-          <EmptyState title="Nothing waiting. Every report has a misconception." />
+          <EmptyState title="No reports waiting for review." />
         </div>
       ) : (
         <ul className="reports">
@@ -44,7 +45,7 @@ export default function ReviewPage() {
               </div>
               <div className="report-actions">
                 {r.assignment.candidates.filter((c) => c.score >= 0.1).length === 0 ? (
-                  <span className="small muted" style={{ alignSelf: "center" }}>No strong guess</span>
+                  <span className="small muted" style={{ alignSelf: "center" }}>No label suggestion</span>
                 ) : null}
                 {r.assignment.candidates.filter((c) => c.score >= 0.1).map((c) => (
                   <button

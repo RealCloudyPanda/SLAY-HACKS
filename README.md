@@ -208,3 +208,10 @@ precision is **15/16 (93.75%)**, including the ambiguous false positive; clear-g
 is **15/15**. The latter excludes ambiguous gold cases and must not be presented as overall precision.
 The fair comparison baseline selects inside Q4 then measures that selected concept on all reports:
 **7 versus 14**, using the same cohort and current assignments. No services or keys are needed by default.
+
+The Sample engine now sends obvious off-topic cue collisions and explicit correction/qualification
+language to TA review, without issuing a misleading evidence quote. For example, “a bigger monitor
+is always better” and “A* stops when the goal is popped, not when generated” abstain. These are
+conservative phrase/context gates, not semantic understanding: unrecognised negations, indirect
+paraphrases and other out-of-taxonomy reports can still be mislabelled. `tests/reviewLanguage.test.ts`
+contains 12 authored development regressions discovered in this pass; it is not an independent test set.
