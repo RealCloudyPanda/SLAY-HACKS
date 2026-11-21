@@ -6,13 +6,27 @@ describe("compare on gold seed labels", () => {
   const c = compare(SEED.map((s) => ({ questionId: s.questionId, label: s.gold })));
   it("tells the designed story", () => {
     expect(c.topQuestion).toBe("Q4");
-    expect(c.reach.byQuestion).toBe(6);
+    expect(c.reach.byQuestion).toBe(7);
     expect(c.byMisconception[0].id).toBe("goal-test-on-generation");
     expect(c.reach.byMisconception).toBe(14);
   });
   it("builds the template sentence", () => {
     expect(compareSentence(c, (id) => id)).toBe(
-      "Grouping by question says start with Q4. But one explanation of 'goal-test-on-generation' reaches 14 students across Q2, Q4 and Q5, versus 6 for the most common idea inside Q4.",
+      "Grouping by question says start with Q4. But one explanation of 'goal-test-on-generation' reaches 14 reports across Q2, Q4 and Q5, versus 7 across all reports for 'closed-never-reopened', the idea selected inside Q4.",
     );
+  });
+});
+
+describe("fair comparison edge cases", () => {
+  it("counts the busiest-question idea beyond that question", () => {
+    const c = compare([{ questionId: "Q4", label: "g-h-swapped" }, { questionId: "Q4", label: "g-h-swapped" }, { questionId: "Q2", label: "g-h-swapped" }]);
+    expect(c.reach.byQuestion).toBe(3);
+    expect(c.reach.byMisconception).toBe(3);
+    expect(c.agree).toBe(true);
+  });
+  it("handles empty reports without a teaching claim", () => {
+    const c = compare([]);
+    expect(c.reach).toEqual({ byQuestion: 0, byMisconception: 0 });
+    expect(compareSentence(c, String)).toContain("nothing to compare");
   });
 });
