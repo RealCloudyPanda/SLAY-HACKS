@@ -384,7 +384,7 @@ Select the by-question baseline concept using the busiest question and its most 
 Measure that selected concept across the full current report cohort, matching the misconception view's
 measurement scope. The seed example is 7 versus 14 reports; counts do not identify unique students.
 
-The dashboard provides a selection of one or two existing concepts and exports their static teaching hints,
+The dashboard provides a selection of one or two existing concepts and exports Markdown and JSON with their static teaching hints,
 current report evidence, provisional/TA-checked counts and remaining review count. Recompute from current
 assignments and display names after corrections, renames and reset. Do not generate teaching advice.
 

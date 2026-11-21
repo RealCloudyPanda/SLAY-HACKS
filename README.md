@@ -198,7 +198,7 @@ direction. The evaluation table comes from the recorded `npm run eval` output.
 ### Prepare a teaching brief
 
 On `/ta`, follow “Try the real flow”: submit a fresh vague sentence, find its abstention in review,
-move it after human judgment, then refresh the dashboard. Select one or two concepts and export JSON
+move it after human judgment, then refresh the dashboard. Select one or two concepts and download a readable Markdown brief (or JSON)
 with existing taxonomy hints, current evidence, provisional/TA-checked counts, and remaining review count.
 Names and evidence rebuild from current state, including corrections and resets. Counts are reports,
 not unique students; no identity system is added. Match support is a heuristic, not calibrated confidence.
