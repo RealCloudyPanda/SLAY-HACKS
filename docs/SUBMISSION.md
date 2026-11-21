@@ -79,3 +79,9 @@ contract, zod, TypeScript and Vitest. State lives in memory with no database, by
 Planning, code and docs were drafted with AI coding assistants under my direction and checked by running the
 tests and the eval. [[OWNER: name the assistants you used.]]
 ```
+
+**Built with:** `next.js` · `react` · `trpc` · `tanstack-query` · `zod` · `typescript` · `vitest`
+
+**Try it out:** [[hosted demo URL, if you deploy one]] · `https://github.com/RealCloudyPanda/SLAY-HACKS`
+
+**Team:** [[OWNER: your name as entrant; solo]]
