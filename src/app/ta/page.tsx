@@ -1,4 +1,5 @@
 "use client";
+import { TeachingBrief } from "@/components/TeachingBrief";
 
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
@@ -76,6 +77,7 @@ export default function Dashboard() {
               </div>
             </section>
           </div>
+          <TeachingBrief options={d.briefOptions} reviewCount={d.totals.review} reportCount={d.totals.reports} />
           <section className="panel" aria-labelledby="rc-h">
             <div className="panel-head">
               <h2 id="rc-h">Recent corrections</h2>
