@@ -56,3 +56,22 @@ Misses (2):
 After adding TA exemplars to the Sample engine: identical numbers to Run 1 (overall 18/20, accuracy when
 answered 15/15, coverage 15/16, abstain 4/20, ambiguous caught 3/4, baseline 30.0%). The eval uses a clean
 engine without exemplars.
+
+### Run 3: 2026-11-21, commit `50f182a`
+
+Command: `npm run eval`. Same unchanged 20 authored cases and classifier; this revision changes reporting,
+not the frozen run above. This is an authored challenge set and is not independent validation.
+
+| Metric | Result | Denominator |
+|---|---|---|
+| Overall agreement | 18/20 (90%) | All cases, abstain treated as a label |
+| Issued-label precision | 15/16 (93.75%) | All non-abstain predictions, including the false positive on ambiguous h19 |
+| Clear-gold conditional accuracy | 15/15 (100%) | Answered cases with non-abstain gold only |
+| Coverage | 15/16 (93.75%) | Clear-gold cases |
+| Abstain rate | 4/20 (20%) | All cases |
+| Ambiguous caught | 3/4 (75%) | Ambiguous-gold cases |
+| By-question baseline agreement | 6/20 (30%) | All cases |
+
+Misses remain h01 (missed paraphrase, abstained) and h19 (ambiguous gold, issued closed-never-reopened).
+Unavailable denominators return null for precision, coverage and conditional accuracy. No evidence here
+establishes student learning gains. Keep the conditional 15/15 distinct from the all-issued 15/16.
