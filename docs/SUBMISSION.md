@@ -85,3 +85,10 @@ tests and the eval. [[OWNER: name the assistants you used.]]
 **Try it out:** [[hosted demo URL, if you deploy one]] · `https://github.com/RealCloudyPanda/SLAY-HACKS`
 
 **Team:** [[OWNER: your name as entrant; solo]]
+
+## Before you press submit
+- [ ] Re-run `npm run eval` on the final commit and update the numbers if they changed.
+- [ ] If you host it, remember anyone with the URL can change the demo data; keep it to synthetic reports.
+- [ ] Video 2–4 minutes, public, no real student data on screen.
+- [ ] Every `[[OWNER]]` line replaced or removed.
+- [ ] Submit by Dec 5; the deadline is Dec 7, 5:00 PM ET.
