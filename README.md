@@ -37,7 +37,7 @@ by 6 reports inside Q4 and 7 across the entire cohort. Explaining "A* stops when
 
 | Compare view | Cluster detail |
 |---|---|
-| ![Compare: grouping by question reaches 6, grouping by misconception reaches 14](docs/images/compare.png) | ![Cluster detail with verbatim evidence underlined](docs/images/cluster.png) |
+| ![Compare: the question-selected explanation has 7 supporting reports across the cohort, versus 14 for the concept-selected explanation](docs/images/compare.png) | ![Cluster detail with verbatim evidence underlined and heuristic match support](docs/images/cluster.png) |
 
 | Review queue | Evaluation | Student form (390px) |
 |---|---|---|
