@@ -60,7 +60,7 @@ export default function Dashboard() {
             <section className="panel" aria-labelledby="tf-h">
               <div className="panel-head">
                 <h2 id="tf-h">Teach-first list</h2>
-                <span className="small muted">ranked by students reached</span>
+                <span className="small muted">ranked by supporting reports</span>
               </div>
               <TeachFirstList items={d.teachFirst} />
             </section>

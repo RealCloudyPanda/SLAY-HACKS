@@ -7,7 +7,7 @@ import { EvidenceText } from "./EvidenceText";
 import { MoveMenu } from "./MoveMenu";
 
 const SOURCE: Record<StuckReport["assignment"]["source"], { text: string; ta: boolean }> = {
-  ai: { text: "AI", ta: false },
+  ai: { text: "Provisional", ta: false },
   "ta-confirmed": { text: "TA confirmed", ta: true },
   "ta-moved": { text: "TA moved", ta: true },
   "ta-rejected": { text: "TA rejected", ta: true },

@@ -70,7 +70,7 @@ export default function Landing() {
           <li>
             <span className="step-n">TA</span>
             <h3>Teach-first list</h3>
-            <p className="muted small">Ranked by how many students one explanation reaches. Confirm, move or rename anything.</p>
+            <p className="muted small">Ranked by how many reports support one explanation. Confirm, move or rename anything.</p>
           </li>
         </ol>
       </section>
