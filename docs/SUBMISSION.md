@@ -66,3 +66,16 @@ and the evidence must be an exact substring of the student's sentence, or the re
 Synthetic demo data only, basic redaction before storage, no label shown to students, human corrections
 that are logged, abstention by default when unsure, and a measured evaluation that shows its misses. The live
 engine has only been tested with a mocked provider.
+
+## Measured results (`npm run eval`, 20 held-out synthetic reports, run 2026-11-21)
+Overall agreement 90% (18/20) · accuracy when answered 100% (15/15) · abstain rate 20% (4/20) ·
+ambiguous reports caught 75% (3/4) · naive by-question baseline 30%. A small set: one item is 5 points.
+
+## How I built it
+Next.js 16 (App Router) serving UI and API in one process, tRPC v11 with TanStack Query for one typed
+contract, zod, TypeScript and Vitest. State lives in memory with no database, by design.
+
+## Built with AI assistance
+Planning, code and docs were drafted with AI coding assistants under my direction and checked by running the
+tests and the eval. [[OWNER: name the assistants you used.]]
+```
