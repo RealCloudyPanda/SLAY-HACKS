@@ -1,3 +1,4 @@
+import { teachingBrief } from "@/domain/brief";
 import { heatmap } from "@/domain/heatmap";
 import { teachFirst } from "@/domain/ranking";
 import { state } from "@/store/memory";
@@ -11,6 +12,7 @@ export const dashboardRouter = createTRPCRouter({
     const tf = teachFirst(l);
     const hm = heatmap(l, tf.map((t) => t.id));
     return {
+      briefOptions: tf.filter((t) => t.count > 0).map((t) => teachingBrief({ reports: s.reports, names: s.misconceptions }, [t.id]).concepts[0]),
       totals: {
         reports: s.reports.length,
         assigned: s.reports.filter((r) => r.assignment.label !== "abstain").length,
