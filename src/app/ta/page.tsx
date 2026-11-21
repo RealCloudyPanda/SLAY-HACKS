@@ -47,6 +47,17 @@ export default function Dashboard() {
         </div>
       </div>
 
+      <section className="panel panel-body stack" aria-labelledby="try-flow">
+        <h2 id="try-flow">Try the real flow</h2>
+        <p className="muted">This A* demo starts with authored reports. Submit a fresh sentence to see the same flow with your own input.</p>
+        <ol>
+          <li><Link href="/submit">Submit a fresh report</Link>, for example “I got really lost in the middle.”</li>
+          <li><Link href="/ta/review">Open review</Link>; that vague sentence should abstain. Move it only after deciding which concept it supports.</li>
+          <li>Refresh this dashboard, select one or two concepts below, and export the updated teaching brief.</li>
+        </ol>
+        <p className="small muted">Labels remain provisional until checked. Counts represent reports; there is no student identity or unique-person estimate.</p>
+      </section>
+
       {q.error ? <div className="banner banner-warn">Couldn&apos;t load the dashboard: {q.error.message}</div> : null}
 
       {d && d.totals.reports === 0 ? (
