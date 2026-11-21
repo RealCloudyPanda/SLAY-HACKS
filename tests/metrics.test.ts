@@ -13,6 +13,8 @@ describe("metrics", () => {
   const m = computeMetrics([...preds]);
   it("computes SPEC 7 metrics on a hand-made confusion", () => {
     expect(m.overallAgreement).toBeCloseTo(2 / 5);
+    expect(m.issuedLabelPrecision).toBeCloseTo(1 / 3);
+    expect(m.counts.issued).toBe(3);
     expect(m.accuracyWhenAnswered).toBeCloseTo(1 / 2);
     expect(m.coverage).toBeCloseTo(2 / 3);
     expect(m.abstainRate).toBeCloseTo(2 / 5);
@@ -29,4 +31,15 @@ describe("metrics", () => {
     expect(b.Q5).toBe("any-heuristic-optimal");
     expect(b.NS).toBe("abstain");
   });
+});
+
+it("uses null for unavailable precision and conditional denominators", () => {
+  const empty = computeMetrics([]);
+  expect(empty.issuedLabelPrecision).toBeNull();
+  expect(empty.accuracyWhenAnswered).toBeNull();
+  expect(empty.coverage).toBeNull();
+  expect(empty.ambiguousCaught).toBeNull();
+  const falsePositive = computeMetrics([{ gold: "abstain", predicted: "g-h-swapped" }]);
+  expect(falsePositive.issuedLabelPrecision).toBe(0);
+  expect(falsePositive.accuracyWhenAnswered).toBeNull();
 });
