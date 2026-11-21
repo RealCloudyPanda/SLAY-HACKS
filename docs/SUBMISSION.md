@@ -20,11 +20,11 @@ Draft for the owner. Nothing here has been submitted. Rules and overview checked
 
 | Time | Screen | Voice-over |
 | --- | --- | --- |
-| 0:00–0:20 | `/ta/compare`: by question, the first explanation reaches 6; by misconception, 14. | "Grouping office-hours questions by homework number says start with Q4. But the biggest idea in Q4 reaches six students. One explanation of 'A-star stops when the goal is generated' reaches fourteen, across three questions." |
+| 0:00–0:20 | `/ta/compare`: by question, the first explanation is supported by 7 reports across the full cohort; by misconception, 14. | "Grouping office-hours questions by homework number says start with Q4. But the biggest idea in Q4 has seven supporting reports across the full cohort. One explanation of 'A-star stops when the goal is generated' has fourteen supporting reports, across three questions." |
 | 0:20–0:35 | Landing page. | "Ten minutes before office hours, a TA has one question: what should I explain first? Office Hours Heatmap answers it." |
 | 0:35–0:55 | `/submit` at phone width: pick a question, type one fictional sentence, submit. | "Students say where they got stuck in one sentence. No name, no account, and they don't get a label back." |
-| 0:55–1:20 | `/ta`: teach-first list with reason lines; hover the heatmap. | "The TA sees misconceptions, not question numbers, ranked by how many students one explanation reaches, next to a misconception-by-question heatmap." |
-| 1:20–1:45 | `/ta/m/goal-test-on-generation`: underlined verbatim evidence, confidence, "What to say". Rename the misconception; confirm one report. | "Every assignment shows its evidence, quoted word for word. If it isn't a real quote from the student, it can't reach the TA. Corrections are one click and logged." |
+| 0:55–1:20 | `/ta`: teach-first list with reason lines; hover the heatmap. | "The TA sees misconceptions, not question numbers, ranked by how many reports support one explanation, next to a misconception-by-question heatmap." |
+| 1:20–1:45 | `/ta/m/goal-test-on-generation`: underlined verbatim evidence, match support, "What to say". Rename the misconception; confirm one report. | "Every assignment shows its evidence, quoted word for word. If it isn't a real quote from the student, it can't reach the TA. Corrections are one click and logged." |
 | 1:45–2:10 | `/ta/review`: an abstained report that mixes two ideas. Assign it; the count updates. | "When it isn't sure, it abstains. This one mixes two ideas, so a human decides." |
 | 2:10–2:35 | `/ta/eval`: metrics table and the misses. | "We measured it on 20 held-out synthetic reports: 15 of 15 right when it answered, 4 abstentions, 2 misses, all shown here. A by-question baseline agrees 30% of the time." |
 | 2:35–2:50 | `/ta/settings`. | "Sample mode runs offline with no setup. If you add your own model, reports are redacted before they're sent, and the same validator checks its answers." |
@@ -44,13 +44,13 @@ Draft for the owner. Nothing here has been submitted. Rules and overview checked
 ## The problem
 Before office hours a TA has minutes to decide what to explain. Student notes get sorted by homework
 question, but one misconception spreads across questions and one question hides several. In the demo data,
-Q4 has the most complaints (17), yet its most common idea is shared by only 6 students, while explaining
-"A* stops when the goal is generated" reaches 14 students across Q2, Q4 and Q5.
+Q4 has the most complaints (17), yet its most common idea is shared by 6 reports inside Q4 and 7 across the full cohort, while explaining
+"A* stops when the goal is generated" has 14 supporting reports across Q2, Q4 and Q5.
 
 ## What it does
 - **Student form:** pick a question, write one sentence, submit. No account, no name, no label returned.
-- **Teach-first list and heatmap:** misconceptions ranked by how many students one explanation reaches.
-- **Cluster detail:** every report with the evidence quoted word for word, a confidence, and a teaching hint.
+- **Teach-first list and heatmap:** misconceptions ranked by how many reports support one explanation.
+- **Cluster detail:** every report with the evidence quoted word for word, heuristic match support, and a teaching hint.
 - **Review queue:** vague or mixed reports are not guessed; a TA assigns them with one click.
 - **Compare view:** grouping by question vs by misconception, side by side.
 - **Evaluation page:** measured results on a held-out set, with every miss.
@@ -92,3 +92,14 @@ tests and the eval. [[OWNER: name the assistants you used.]]
 - [ ] Video 2–4 minutes, public, no real student data on screen.
 - [ ] Every `[[OWNER]]` line replaced or removed.
 - [ ] Submit by Dec 5; the deadline is Dec 7, 5:00 PM ET.
+
+## Fresh-input demonstration and evidence boundaries
+
+After the comparison, submit “I got really lost in the middle” through `/submit`. Find the new abstention
+in `/ta/review`, choose a concept only after human judgment, refresh `/ta`, then select one or two concepts
+and export the teaching brief. Inspect its current teaching hints, evidence status and remaining review count.
+Rename and reset rebuild these values; reports are never represented as unique people.
+
+State that the 20 evaluation cases are authored challenges, not independent validation. Quote issued-label
+precision as 15/16, alongside the conditional clear-gold 15/15, rather than claiming 100% precision.
+The optional live engine is not required for this demonstration. Stay within the existing A* taxonomy.
