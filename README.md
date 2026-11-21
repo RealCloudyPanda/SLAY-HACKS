@@ -16,21 +16,21 @@ stuck" notes and deciding what to explain first at the whiteboard.
 Today those notes get sorted by homework question number. But one misconception spreads across several
 questions, and one question hides several misconceptions. The by-question view points at the wrong first
 explanation. In the demo data, Q4 has the most complaints (17), but the most common idea inside Q4 is shared
-by only 6 students. Explaining "A* stops when the goal is generated" reaches 14 students across Q2, Q4 and Q5.
+by 6 reports inside Q4 and 7 across the entire cohort. Explaining "A* stops when the goal is generated" is supported by 14 reports across Q2, Q4 and Q5.
 
 ## What it does
 
 - **Student form** (`/submit`): pick a question, write one sentence, submit. The form asks for no account or
   name and returns no label. Basic redaction handles common identifiers before storage.
-- **Teach-first list** (`/ta`): misconceptions ranked by how many students one explanation reaches, each with
+- **Teach-first list** (`/ta`): misconceptions ranked by how many reports support one explanation, each with
   a reason line ("14 reports across Q2, Q4, Q5"), next to a misconception × question heatmap.
 - **Cluster detail** (`/ta/m/[id]`): every report in a misconception, with the engine's evidence
-  **quoted word for word** and underlined, a confidence bar, and a one-line "What to say" teaching hint.
+  **quoted word for word** and underlined, a heuristic match-support bar, and a one-line "What to say" teaching hint.
   Confirm, Move to…, Not this, or rename the misconception inline. Every correction is logged.
 - **Review queue** (`/ta/review`): when a report is vague or mixes two ideas, the engine **abstains** instead
   of guessing. A TA assigns it with one click, with the engine's top guesses as hints.
 - **Compare view** (`/ta/compare`): the same reports grouped by question number and by misconception, with
-  "first explanation reaches N students" for each and a template sentence (not AI-written) stating the gap.
+  "first explanation reaches N reports" for each and a template sentence (not AI-written) stating the gap.
 - **Evaluation** (`/ta/eval`, `npm run eval`): measured metrics on a held-out synthetic set, a confusion
   table, and every miss.
 - **Optional live model** (`/ta/settings`): use an approved OpenAI-compatible endpoint with your own key.
@@ -46,7 +46,7 @@ by only 6 students. Explaining "A* stops when the goal is generated" reaches 14 
 ## The demo moment
 
 Open `/ta/compare`. Grouping by question says start with Q4. The most common idea inside Q4 reaches
-**6** students. One explanation of "A* stops when the goal is generated" reaches **14** students across Q2, Q4
+**7** reports across the entire cohort (6 inside Q4). One explanation of "A* stops when the goal is generated" reaches **14** reports across Q2, Q4
 and Q5. Then click that misconception and read the students' own words, with the evidence underlined in red
 pencil.
 
@@ -149,7 +149,7 @@ are listed on `/ta/eval`.
 |---|---|
 | Innovation & originality (25) | `/ta/compare`: grouping by misconception across questions picks a different first explanation; abstain by default (ADR 0001, 0003) |
 | Technical implementation (25) | Typed tRPC v11 routers (`src/trpc/routers`), zod-validated engine contract, deterministic engine, `npm test` and `npm run eval` |
-| Real-world impact (20) | `/ta` teach-first list: the TA's ten minutes; "first explanation reaches N students"; works offline with zero setup |
+| Real-world impact (20) | `/ta` teach-first list: the TA's ten minutes; "first explanation reaches N reports"; works offline with zero setup |
 | AI integration & responsible use (15) | Verbatim evidence (`/ta/m/…`), abstain + review queue (`/ta/review`), logged corrections, no labels on the student form, basic redaction, evaluation with misses (`/ta/eval`), and live data disclosure (`/ta/settings`) |
 | UX & presentation (15) | "Marked-up answer sheet" design: one pencil-red accent, Geist type, tabular numbers, visible focus rings, heatmap cells with aria-labels and printed counts, 390px student form |
 
@@ -194,3 +194,17 @@ direction. The evaluation table comes from the recorded `npm run eval` output.
 ## License
 
 [MIT](LICENSE)
+
+### Prepare a teaching brief
+
+On `/ta`, follow “Try the real flow”: submit a fresh vague sentence, find its abstention in review,
+move it after human judgment, then refresh the dashboard. Select one or two concepts and export JSON
+with existing taxonomy hints, current evidence, provisional/TA-checked counts, and remaining review count.
+Names and evidence rebuild from current state, including corrections and resets. Counts are reports,
+not unique students; no identity system is added. Match support is a heuristic, not calibrated confidence.
+
+Evaluation uses authored synthetic challenge cases, not independent validation. All-issued-label
+precision is **15/16 (93.75%)**, including the ambiguous false positive; clear-gold conditional accuracy
+is **15/15**. The latter excludes ambiguous gold cases and must not be presented as overall precision.
+The fair comparison baseline selects inside Q4 then measures that selected concept on all reports:
+**7 versus 14**, using the same cohort and current assignments. No services or keys are needed by default.
