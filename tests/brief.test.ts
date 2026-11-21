@@ -1,0 +1,28 @@
+import { beforeEach, expect, it } from 'vitest';
+import { teachingBrief } from '@/domain/brief';
+import { state, store } from '@/store/memory';
+const id = 'goal-test-on-generation' as const;
+const brief = () => teachingBrief({ reports: state().reports, names: state().misconceptions }, [id]);
+beforeEach(() => store.reset());
+it('refreshes hints, checked counts and display names after review actions', () => {
+  const report = store.submit('Q2', 'I stopped as soon as the goal was added to the open list');
+  const before = brief().concepts[0];
+  store.confirm(report.id);
+  store.rename(id, 'Wait until the goal is popped');
+  const after = brief().concepts[0];
+  expect(after.confirmed).toBe(before.confirmed + 1);
+  expect(after.provisional).toBe(before.provisional - 1);
+  expect(after.name).toBe('Wait until the goal is popped');
+  expect(after.teachingHint).toContain('popped');
+  expect(after.evidence.find((r) => r.id === report.id)?.status).toBe('TA checked');
+  store.reject(report.id);
+  expect(brief().concepts[0].evidence.some((r) => r.id === report.id)).toBe(false);
+  expect(brief().reviewCount).toBeGreaterThan(0);
+  store.reset();
+  expect(brief().concepts[0].name).not.toBe(after.name);
+});
+it('deduplicates selections and caps briefs at two concepts', () => {
+  const input = { reports: state().reports, names: state().misconceptions };
+  expect(teachingBrief(input, [id, id]).concepts).toHaveLength(1);
+  expect(teachingBrief(input, state().misconceptions.map((m) => m.id)).concepts).toHaveLength(2);
+});
