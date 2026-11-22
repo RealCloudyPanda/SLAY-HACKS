@@ -1,8 +1,9 @@
+import { teachingSnapshot } from '@/domain/teachingSnapshot';
 import { beforeEach, expect, it } from 'vitest';
-import { briefMarkdown, teachingBrief } from '@/domain/brief';
+import { briefMarkdown } from '@/domain/brief';
 import { state, store } from '@/store/memory';
 const id = 'goal-test-on-generation' as const;
-const brief = () => teachingBrief({ reports: state().reports, names: state().misconceptions }, [id]);
+const brief = () => teachingSnapshot(state()).brief([id]);
 beforeEach(() => store.reset());
 it('refreshes hints, checked counts and display names after review actions', () => {
   const report = store.submit('Q2', 'I stopped as soon as the goal was added to the open list');
@@ -22,9 +23,9 @@ it('refreshes hints, checked counts and display names after review actions', () 
   expect(brief().concepts[0].name).not.toBe(after.name);
 });
 it('deduplicates selections and caps briefs at two concepts', () => {
-  const input = { reports: state().reports, names: state().misconceptions };
-  expect(teachingBrief(input, [id, id]).concepts).toHaveLength(1);
-  expect(teachingBrief(input, state().misconceptions.map((m) => m.id)).concepts).toHaveLength(2);
+  const snapshot = teachingSnapshot(state());
+  expect(snapshot.brief([id, id]).concepts).toHaveLength(1);
+  expect(snapshot.brief(state().misconceptions.map((m) => m.id)).concepts).toHaveLength(2);
 });
 
 it('escapes Markdown metacharacters and includes source status and remaining review', () => {
