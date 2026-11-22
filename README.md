@@ -153,6 +153,11 @@ are listed on `/ta/eval`.
 | AI integration & responsible use (15) | Verbatim evidence (`/ta/m/…`), abstain + review queue (`/ta/review`), logged corrections, no labels on the student form, basic redaction, evaluation with misses (`/ta/eval`), and live data disclosure (`/ta/settings`) |
 | UX & presentation (15) | "Marked-up answer sheet" design: one pencil-red accent, Geist type, tabular numbers, visible focus rings, heatmap cells with aria-labels and printed counts, 390px student form |
 
+The teaching snapshot module (`src/domain/teachingSnapshot.ts`) captures one copy of current reports,
+names, corrections and engine status. Dashboard, review, misconception detail, compare and brief
+outputs derive from that snapshot. Routers validate inputs and return its views; calculations stay
+inside the module. Tests use the same interface and retain transport-level correction regressions.
+
 ## Project structure
 
 ```

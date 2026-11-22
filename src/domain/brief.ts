@@ -1,7 +1,7 @@
-import type { teachingSnapshot } from './teachingSnapshot';
+import type { TeachingConcept } from './teachingSnapshot';
 
 const inline = (text: string): string => text.replace(/[\r\n]+/g, ' ').replace(/([\\`*_[\]<>])/g, '\\$1');
-export function briefMarkdown(concepts: ReturnType<ReturnType<typeof teachingSnapshot>['brief']>['concepts'], reviewCount: number, reportCount: number): string {
+export function briefMarkdown(concepts: TeachingConcept[], reviewCount: number, reportCount: number): string {
   return [
     '# Teaching brief', '',
     `${reportCount} reports · ${reviewCount} waiting for review. Counts are reports, not unique students.`,

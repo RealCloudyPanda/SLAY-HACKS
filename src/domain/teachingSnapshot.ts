@@ -31,11 +31,11 @@ export function teachingSnapshot(input: TeachingState) {
   });
   return {
     brief(selected: MisconceptionId[]) {
-      return { reviewCount: review.length, reportCount: s.reports.length, concepts: [...new Set(selected)].slice(0, 2).map((id) => concepts.find((c) => c.id === id)!) };
+      return structuredClone({ reviewCount: review.length, reportCount: s.reports.length, concepts: [...new Set(selected)].slice(0, 2).map((id) => concepts.find((c) => c.id === id)!) });
     },
     dashboard() {
       const hm = heatmap(labelled, ranked.map((t) => t.id));
-      return {
+      return structuredClone({
         briefOptions: concepts.filter((c) => c.count > 0),
         totals: { reports: s.reports.length, assigned: s.reports.length - review.length, review: review.length, corrected: s.reports.filter((r) => r.assignment.source !== 'ai').length },
         teachFirst: ranked.map((t) => ({ ...t, name: nameOf(t.id) })),
@@ -47,22 +47,24 @@ export function teachingSnapshot(input: TeachingState) {
           misconceptionName: c.misconceptionId ? nameOf(c.misconceptionId) : undefined,
         })),
         engine: s.engine,
-      };
+      });
     },
     cluster(id: MisconceptionId) {
       const reports = s.reports.filter((r) => r.assignment.label === id).sort((a, b) => b.assignment.confidence - a.assignment.confidence || a.id.localeCompare(b.id));
-      return { misconception: s.misconceptions.find((m) => m.id === id)!, reports,
-        countsByQuestion: QUESTION_IDS.map((questionId) => ({ questionId, count: reports.filter((r) => r.questionId === questionId).length })), all };
+      return structuredClone({ misconception: s.misconceptions.find((m) => m.id === id)!, reports,
+        countsByQuestion: QUESTION_IDS.map((questionId) => ({ questionId, count: reports.filter((r) => r.questionId === questionId).length })), all });
     },
-    review() { return { reports: review, misconceptions: all }; },
+    review() { return structuredClone({ reports: review, misconceptions: all }); },
     compare() {
       const c = compare(labelled);
-      return { ...c,
+      return structuredClone({ ...c,
         byMisconception: c.byMisconception.map((m) => ({ ...m, name: nameOf(m.id) })),
         topQuestionMix: c.topQuestionMix.map((m) => ({ ...m, name: m.label === 'abstain' ? 'Needs review' : nameOf(m.label) })),
         topQuestionIdeaName: c.topQuestionIdea ? nameOf(c.topQuestionIdea) : null,
         sentence: compareSentence(c, nameOf),
-      };
+      });
     },
   };
 }
+
+export type TeachingConcept = ReturnType<ReturnType<typeof teachingSnapshot>['brief']>['concepts'][number];

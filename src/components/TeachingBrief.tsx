@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { briefMarkdown } from '@/domain/brief';
 import type { MisconceptionId } from '@/domain/types';
-type Concept = ReturnType<ReturnType<typeof import('@/domain/teachingSnapshot').teachingSnapshot>['brief']>['concepts'][number];
+type Concept = import('@/domain/teachingSnapshot').TeachingConcept;
 export function TeachingBrief({ options, reviewCount, reportCount }: { options: Concept[]; reviewCount: number; reportCount: number }) {
   const [selected, setSelected] = useState<MisconceptionId[]>([]);
   const chosen = options.filter((item) => selected.includes(item.id));
